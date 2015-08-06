@@ -1,0 +1,8 @@
+{
+    "extName": {
+        "message": "Open New Tab After Current Tab"
+    },
+    "extDescription": {
+        "message": "Opens new tab after the current tab, instead of last position."
+    }
+}
