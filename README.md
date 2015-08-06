@@ -12,5 +12,5 @@ Installation
 2. Open the extensions page of your browser
 3. Drag & drop the _.crx_ file in that tab
 
-### From [Chrome Web Store](https://chrome.google.com/webstore/)  
-[![Facebook Notifier available in the Chrome Web Store](https://developer.chrome.com/webstore/images/ChromeWebStore_BadgeWBorder_v2_206x58.png)](https://chrome.google.com/webstore/
+### From [Chrome Web Store](https://chrome.google.com/webstore/detail/open-new-tab-after-curren/mmcgnaachjapbbchcpjihhgjhpfcnoan)  
+[![Facebook Notifier available in the Chrome Web Store](https://developer.chrome.com/webstore/images/ChromeWebStore_BadgeWBorder_v2_206x58.png)](https://chrome.google.com/webstore/detail/open-new-tab-after-curren/mmcgnaachjapbbchcpjihhgjhpfcnoan)
