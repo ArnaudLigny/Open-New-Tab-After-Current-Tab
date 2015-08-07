@@ -31,10 +31,13 @@
   });
   // on window focused
   chrome.windows.onFocusChanged.addListener(function(windowId) {
-    chrome.tabs.getSelected(chrome.tabs.windowId, function(tab) {
-      console.log('chrome.windows.onFocusChanged - tab.index: ' + tab.index); // debug
-      currentIndex = tab.index;
-    });
+    // https://developer.chrome.com/extensions/windows#property-WINDOW_ID_NONE
+    if (windowId != -1 && windowId != -2) {
+      chrome.tabs.getSelected(chrome.tabs.windowId, function(tab) {
+        console.log(windowId + ' - chrome.windows.onFocusChanged - tab.index: ' + tab.index); // debug
+        currentIndex = tab.index;
+      });
+    }
   });
   // on tab activated
   chrome.tabs.onActivated.addListener(function(activeInfo) {
