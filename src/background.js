@@ -5,14 +5,14 @@
 
   function getCurrentActiveTab() {
     chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
-      console.log('chrome.tabs.query - index: ' + tabs[0].index); // debug
+      console.log(tabs[0].windowId + ' - chrome.tabs.query - index: ' + tabs[0].index); // debug
       currentIndex = tabs[0].index;
     });
     // fallback
     if (Number.isInteger(currentIndex)) {
       // last position (default behavior)
       chrome.tabs.query({currentWindow: true}, function (tabs) {
-        console.log('chrome.runtime.onInstalled - tabs.length: ' + tabs.length); // debug
+        console.log(tabs[0].windowId + ' - chrome.runtime.onInstalled - tabs.length: ' + tabs.length); // debug
         currentIndex = tabs.length;
       });
     }
@@ -42,7 +42,7 @@
   // on tab activated
   chrome.tabs.onActivated.addListener(function(activeInfo) {
     chrome.tabs.get(activeInfo.tabId, function(tab) {
-      console.log('chrome.tabs.onActivated - tab.index: ' + tab.index); // debug
+      console.log(tab.windowId + ' - chrome.tabs.onActivated - tab.index: ' + tab.index); // debug
       currentIndex = tab.index;
     });
   });
@@ -56,7 +56,7 @@
    * Move new tab after the current
    */
   chrome.tabs.onCreated.addListener(function(tab) {
-    console.log('chrome.tabs.onCreated - currentIndex: ' + currentIndex); // debug
+    console.log(tab.windowId + ' - chrome.tabs.onCreated - currentIndex: ' + currentIndex); // debug
     chrome.tabs.move(tab.id, {
       index: currentIndex + 1
     });
