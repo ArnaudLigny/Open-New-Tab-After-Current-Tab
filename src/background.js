@@ -46,6 +46,11 @@
       currentIndex = tab.index;
     });
   });
+  // on tab manually moved
+  chrome.tabs.onMoved.addListener(function(tabId, moveInfo) {
+    console.log(moveInfo.windowId + ' - chrome.tabs.onMoved - moveInfo.toIndex: ' + moveInfo.toIndex); // debug
+    currentIndex = moveInfo.toIndex;
+  });
 
   /**
    * Move new tab after the current
