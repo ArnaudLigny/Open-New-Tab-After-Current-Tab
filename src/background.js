@@ -57,8 +57,10 @@
    */
   chrome.tabs.onCreated.addListener(function(tab) {
     console.log(tab.windowId + ' - chrome.tabs.onCreated - currentIndex: ' + currentIndex); // debug
-    chrome.tabs.move(tab.id, {
-      index: currentIndex + 1
-    });
+    if (Number.isInteger(currentIndex)) {
+      chrome.tabs.move(tab.id, {
+        index: currentIndex + 1
+      });
+    }
   });
 })();
