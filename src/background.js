@@ -63,11 +63,21 @@
   /**
    * Move new tab after the current
    */
+  // on created
   chrome.tabs.onCreated.addListener(function(tab) {
     console.debug(tab.windowId + ' - chrome.tabs.onCreated - currentIndex: ' + currentIndex[tab.windowId]); // debug
     if (Number.isInteger(currentIndex[tab.windowId])) {
       chrome.tabs.move(tab.id, {
         index: currentIndex[tab.windowId] + 1
+      });
+    }
+  });
+  // on updated
+  chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
+    console.debug(tab.windowId + ' - chrome.tabs.onUpdated - currentIndex: ' + currentIndex[tab.windowId]); // debug
+    if (Number.isInteger(currentIndex[tab.windowId])) {
+      chrome.tabs.move(tab.id, {
+        index: currentIndex[tab.windowId]
       });
     }
   });
