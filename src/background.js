@@ -65,20 +65,22 @@
    */
   // on created
   chrome.tabs.onCreated.addListener(function(tab) {
-    console.debug(tab.windowId + ' - chrome.tabs.onCreated - currentIndex: ' + currentIndex[tab.windowId]); // debug
-    if (Number.isInteger(currentIndex[tab.windowId])) {
-      chrome.tabs.move(tab.id, {
-        index: currentIndex[tab.windowId] + 1
-      });
-    }
+    console.debug(tab.windowId + ' - chrome.tabs.onCreated - tab.index: ' + tab.index); // debug
   });
   // on updated
   chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-    console.debug(tab.windowId + ' - chrome.tabs.onUpdated - currentIndex: ' + currentIndex[tab.windowId]); // debug
+    console.debug(tab.windowId + ' - chrome.tabs.onUpdated - tab.index: ' + tab.index); // debug
+    console.debug('tab.title: ' + tab.title);
     if (Number.isInteger(currentIndex[tab.windowId])) {
-      chrome.tabs.move(tab.id, {
-        index: currentIndex[tab.windowId]
-      });
+      console.debug(tab.windowId + ' - chrome.tabs.onUpdated - currentIndex: ' + currentIndex[tab.windowId]); // debug
+      var moveToIndex = currentIndex[tab.windowId] + 1;
+      console.debug('Is tab.index: ' + tab.index + ' + 1 != ' + 'moveToIndex: ' + moveToIndex + ' ?'); // debug
+      if (tab.index + 1 != moveToIndex) {
+        console.debug('Move it to: ' + moveToIndex);
+        chrome.tabs.move(tab.id, {
+          index: moveToIndex
+        });
+      }
     }
   });
 })();
