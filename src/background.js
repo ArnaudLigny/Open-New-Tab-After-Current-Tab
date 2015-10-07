@@ -21,7 +21,7 @@
   }
 
   function moveIt(tab, event) {
-    console.debug('----');
+    console.debug('tab created');
     console.debug(tab.windowId + ' - chrome.tabs.' + event + ' - get new tab.index: ' + tab.index + ' (' + tab.title + ')'); // debug
     console.debug(tab.windowId + ' - chrome.tabs.' + event + ' - get currentIndex: ' + currentIndex[tab.windowId]); // debug
     if (Number.isInteger(currentIndex[tab.windowId])) {
@@ -35,7 +35,7 @@
         index: moveToIndex
       });
     }
-    console.debug('----');
+    console.debug('/ tab created');
   }
 
   var eventOnMoved = function (tabId, moveInfo) {
@@ -72,10 +72,14 @@
   });
   // on tab activated
   chrome.tabs.onActivated.addListener(function(activeInfo) {
-    chrome.tabs.get(activeInfo.tabId, function(tab) {
-      console.debug(tab.windowId + ' - chrome.tabs.onActivated - set currentIndex = tab.index: ' + tab.index); // debug
-      currentIndex[tab.windowId] = tab.index;
-    });
+    if (chrome.runtime.lastError) {
+      console.log(chrome.runtime.lastError.message);
+    } else {
+      chrome.tabs.get(activeInfo.tabId, function(tab) {
+        console.debug(tab.windowId + ' - chrome.tabs.onActivated - set currentIndex = tab.index: ' + tab.index); // debug
+        currentIndex[tab.windowId] = tab.index;
+      });
+    }
   });
   // on tab manually moved
   chrome.tabs.onMoved.addListener(eventOnMoved);
