@@ -35,6 +35,7 @@
         index: moveToIndex
       });
     }
+    console.debug('----');
   }
 
   var eventOnMoved = function (tabId, moveInfo) {
