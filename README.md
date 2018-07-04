@@ -3,6 +3,8 @@ Open New Tab After Current Tab
 
 _Open New Tab After Current Tab_ is a Google Chrome extension that opens new tab after the current tab, instead of last position.
 
+![Demo](https://github.com/Narno/Open-New-Tab-After-Current-Tab/blob/gif/Open-New-Tab-After-Current-Tab.gif)
+
 Installation
 ------------
 
