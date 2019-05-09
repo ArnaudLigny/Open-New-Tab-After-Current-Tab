@@ -10,8 +10,15 @@ With this extension a new tab opened with the keyboard shortcut (<kbd>⌘ Cmd</k
 
 ![Demo](https://github.com/Narno/Open-New-Tab-After-Current-Tab/blob/master/docs/Open-New-Tab-After-Current-Tab.gif)
 
+## Development [![Build Status](https://travis-ci.com/Narno/Open-New-Tab-After-Current-Tab.svg?branch=master)](https://travis-ci.com/Narno/Open-New-Tab-After-Current-Tab)
+
+```bash
+npm install
+npm run build
+```
+
 ## License
 
-Open New Tab After Current Tab is a free software distributed under the terms of the MIT license.
+_Open New Tab After Current Tab_ is a free software distributed under the terms of the MIT license.
 
 © [Arnaud Ligny](https://arnaudligny.fr)
