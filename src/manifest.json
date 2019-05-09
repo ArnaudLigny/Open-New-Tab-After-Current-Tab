@@ -1,7 +1,7 @@
 {
   "name": "__MSG_extName__",
   "description": "__MSG_extDescription__",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "homepage_url": "https://github.com/Narno/Open-New-Tab-After-Current-Tab",
   "author": "Arnaud Ligny",
   "developer": {

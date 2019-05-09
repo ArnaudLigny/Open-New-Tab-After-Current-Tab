@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Arnaud Ligny <arnaud@ligny.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 (function () {
   "use strict";
 
@@ -42,7 +48,7 @@
   }
 
   /**
-   * Remember the current tab index
+   * Remember the current tab index.
    */
   // on extension install/update
   chrome.runtime.onInstalled.addListener(function(details) {
@@ -60,7 +66,7 @@
   });
   // on window focused
   chrome.windows.onFocusChanged.addListener(function(windowId) {
-    // https://developer.chrome.com/extensions/windows#property-WINDOW_ID_NONE
+    // @see https://developer.chrome.com/extensions/windows#property-WINDOW_ID_NONE
     if (windowId != -1 && windowId != -2) {
       chrome.tabs.getSelected(chrome.tabs.windowId, function(tab) {
         console.debug(windowId + ' - chrome.windows.onFocusChanged - set currentIndex = tab.index: ' + tab.index);
@@ -83,7 +89,7 @@
   chrome.tabs.onMoved.addListener(eventOnMoved);
 
   /**
-   * Move new tab after the current
+   * Move new tab after the current.
    */
   // on created
   chrome.tabs.onCreated.addListener(function(tab) {
