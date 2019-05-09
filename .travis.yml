@@ -7,7 +7,8 @@ env:
 deploy:
   - provider: script
     skip_cleanup: true
-    script: npm run release
+    #script: npm run release
+    script: npm run build
     on:
       branch: master
       tags: true
