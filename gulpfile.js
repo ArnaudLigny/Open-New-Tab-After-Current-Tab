@@ -73,6 +73,7 @@ gulp.task('crx', ['build'], () => {
       log.error(err.message);
       return err.code;
     }
+
     return gulp.src('build')
       .pipe(crx({
         privateKey: fs.readFileSync('./certs/key', 'utf8'),
