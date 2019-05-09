@@ -17,8 +17,7 @@
     "test": "xo",
     "build": "node_modules/.bin/gulp dist",
     "release:cws": "cd build && webstore upload --auto-publish",
-    "release:amo": "cd build && webext submit",
-    "release": "npm run build && npm run release:cws && npm run release:amo"
+    "release": "npm run build && npm run release:cws"
   },
   "devDependencies": {
     "chrome-webstore-upload-cli": "^1.2.0",
@@ -32,7 +31,6 @@
     "gulp-zip": "^4.2.0",
     "jshint": "^2.9.6",
     "vinyl-paths": "^2.1.0",
-    "webext": "^1.9.1-with-submit.1",
     "xo": "^0.21.1"
   },
   "xo": {
