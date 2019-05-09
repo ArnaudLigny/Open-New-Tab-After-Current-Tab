@@ -4,10 +4,6 @@
   "version": "0.0.10",
   "homepage_url": "https://github.com/Narno/Open-New-Tab-After-Current-Tab",
   "author": "Arnaud Ligny",
-  "developer": {
-    "name": "Arnaud Ligny",
-    "url": "https://arnaudligny.fr"
-  },
   "background": {
     "persistent": false,
     "scripts": [
@@ -26,11 +22,5 @@
   },
   "minimum_chrome_version": "52",
   "manifest_version": 2,
-  "default_locale": "en",
-  "applications": {
-    "gecko": {
-      "id": "Open-New-Tab-After-Current-Tab@narno.org",
-      "strict_min_version": "53.0"
-    }
-  }
+  "default_locale": "en"
 }
