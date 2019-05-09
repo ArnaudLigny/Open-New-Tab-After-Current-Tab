@@ -34,6 +34,7 @@ function moveIt(tab, event) {
       console.log(tab.windowId + ' - chrome.tabs.' + event + ' - tab.index: ' + tab.index + ' == moveToIndex: ' + moveToIndex + ' (nothing to do)');
       return;
     }
+
     console.log(tab.windowId + ' - chrome.tabs.' + event + ' - move to: ' + moveToIndex);
     chrome.tabs.move(tab.id, {
       index: moveToIndex
