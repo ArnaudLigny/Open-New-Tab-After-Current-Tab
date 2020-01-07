@@ -30,14 +30,17 @@ function moveIt(tab, event) {
   console.log(tab.windowId + ' - chrome.tabs.' + event + ' - get currentIndex: ' + currentIndex[tab.windowId]);
   if (Number.isInteger(currentIndex[tab.windowId])) {
     const moveToIndex = currentIndex[tab.windowId] + 1;
-    // current is where it will move :-)
-    currentIndex[tab.windowId] = moveToIndex
-    // nothing to do
+
+    // Current is where it will move :-)
+    currentIndex[tab.windowId] = moveToIndex;
+
+    // Nothing to do
     if (tab.index === moveToIndex) {
       console.log(tab.windowId + ' - chrome.tabs.' + event + ' - tab.index: ' + tab.index + ' == moveToIndex: ' + moveToIndex + ' (nothing to do)');
       return;
     }
-    // move
+
+    // Move!
     chrome.tabs.move(tab.id, {
       index: moveToIndex
     });
