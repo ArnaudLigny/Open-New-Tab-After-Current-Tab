@@ -6,7 +6,7 @@
  */
 'use strict';
 
-const currentIndex = [];
+let currentIndex = [];
 
 function getCurrentActiveTab() {
   chrome.tabs.query({currentWindow: true, active: true}, tabs => {
