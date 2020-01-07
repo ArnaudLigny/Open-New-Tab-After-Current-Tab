@@ -2,8 +2,6 @@ sudo: false
 language: node_js
 node_js:
   - '8'
-  - '12'
-  - '13'
 env:
   - EXTENSION_ID=mmcgnaachjapbbchcpjihhgjhpfcnoan
 deploy:
