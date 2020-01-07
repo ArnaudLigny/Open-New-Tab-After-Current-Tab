@@ -30,15 +30,21 @@ function moveIt(tab, event) {
   console.log(tab.windowId + ' - chrome.tabs.' + event + ' - get currentIndex: ' + currentIndex[tab.windowId]);
   if (Number.isInteger(currentIndex[tab.windowId])) {
     const moveToIndex = currentIndex[tab.windowId] + 1;
+
+    // Current is where it will move :-)
+    currentIndex[tab.windowId] = moveToIndex;
+
+    // Nothing to do
     if (tab.index === moveToIndex) {
       console.log(tab.windowId + ' - chrome.tabs.' + event + ' - tab.index: ' + tab.index + ' == moveToIndex: ' + moveToIndex + ' (nothing to do)');
       return;
     }
 
-    console.log(tab.windowId + ' - chrome.tabs.' + event + ' - move to: ' + moveToIndex);
+    // Move!
     chrome.tabs.move(tab.id, {
       index: moveToIndex
     });
+    console.log(tab.windowId + ' - chrome.tabs.' + event + ' - move to: ' + moveToIndex);
   }
 }
 
