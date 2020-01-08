@@ -1,7 +1,7 @@
 {
   "name": "Open New Tab After Current Tab",
   "description": "__MSG_extDescription__",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "homepage_url": "https://github.com/Narno/Open-New-Tab-After-Current-Tab",
   "author": "Arnaud Ligny",
   "background": {

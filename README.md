@@ -22,3 +22,5 @@ npm run build
 _Open New Tab After Current Tab_ is a free software distributed under the terms of the MIT license.
 
 © [Arnaud Ligny](https://arnaudligny.fr)
+
+_new tab_ icon by Danil Polshin from the Noun Project.
