@@ -13,6 +13,7 @@ With this extension a new tab opened with the keyboard shortcut (<kbd>⌘ Cmd</k
 ## Development [![Build Status](https://travis-ci.com/Narno/Open-New-Tab-After-Current-Tab.svg?branch=master)](https://travis-ci.com/Narno/Open-New-Tab-After-Current-Tab)
 
 ```bash
+git clone https://github.com/Narno/Open-New-Tab-After-Current-Tab.git && cd Open-New-Tab-After-Current-Tab
 npm install
 npm run build
 ```
