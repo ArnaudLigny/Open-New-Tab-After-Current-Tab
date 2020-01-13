@@ -7,7 +7,14 @@
 'use strict';
 
 const currentIndex = [];
+const eventOnMoved = (tabId, moveInfo) => {
+  console.log(moveInfo.windowId + ' - chrome.tabs.onMoved - set currentIndex = moveInfo.toIndex: ' + moveInfo.toIndex);
+  currentIndex[moveInfo.windowId] = moveInfo.toIndex;
+};
 
+getCurrentActiveTab();
+
+// Get the position index of the current active tab
 function getCurrentActiveTab() {
   chrome.tabs.query({currentWindow: true, active: true}, tabs => {
     console.log(tabs[0].windowId + ' - chrome.tabs.query - set currentIndex = index: ' + tabs[0].index);
@@ -25,6 +32,7 @@ function getCurrentActiveTab() {
   });
 }
 
+// I like to move it!
 function moveIt(tab, event) {
   console.log(tab.windowId + ' - chrome.tabs.' + event + ' - get new tab.index: ' + tab.index);
   console.log(tab.windowId + ' - chrome.tabs.' + event + ' - get currentIndex: ' + currentIndex[tab.windowId]);
@@ -48,10 +56,15 @@ function moveIt(tab, event) {
   }
 }
 
-const eventOnMoved = (tabId, moveInfo) => {
-  console.log(moveInfo.windowId + ' - chrome.tabs.onMoved - set currentIndex = moveInfo.toIndex: ' + moveInfo.toIndex);
-  currentIndex[moveInfo.windowId] = moveInfo.toIndex;
-};
+/**
+ * Move the new tab after the current one.
+ */
+// On created
+chrome.tabs.onCreated.addListener(tab => {
+  chrome.tabs.onMoved.removeListener(eventOnMoved);
+  moveIt(tab, 'onCreated');
+  chrome.tabs.onMoved.addListener(eventOnMoved);
+});
 
 /**
  * Remember the current tab index.
@@ -60,13 +73,6 @@ const eventOnMoved = (tabId, moveInfo) => {
 chrome.runtime.onInstalled.addListener(details => {
   if (details.reason === 'install' || details.reason === 'update') {
     console.log('chrome.runtime.onInstalled');
-    getCurrentActiveTab();
-  }
-});
-// On extension enabled
-chrome.management.onEnabled.addListener(ExtensionInfo => {
-  if (ExtensionInfo.id === chrome.runtime.id) {
-    console.log('chrome.management.onEnabled');
     getCurrentActiveTab();
   }
 });
@@ -93,13 +99,3 @@ chrome.tabs.onActivated.addListener(activeInfo => {
 });
 // On tab manually moved
 chrome.tabs.onMoved.addListener(eventOnMoved);
-
-/**
- * Move new tab after the current.
- */
-// On created
-chrome.tabs.onCreated.addListener(tab => {
-  chrome.tabs.onMoved.removeListener(eventOnMoved);
-  moveIt(tab, 'onCreated');
-  chrome.tabs.onMoved.addListener(eventOnMoved);
-});
