@@ -4,98 +4,117 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-'use strict';
+"use strict";
 
-const currentIndex = [];
-const eventOnMoved = (tabId, moveInfo) => {
-  console.log(moveInfo.windowId + ' - chrome.tabs.onMoved - set currentIndex = moveInfo.toIndex: ' + moveInfo.toIndex);
-  currentIndex[moveInfo.windowId] = moveInfo.toIndex;
-};
+// https://developer.chrome.com/extensions/i18n
+const ACTIVE_TAB_KEY = `${chrome.i18n.getMessage("@@extension_id")}_active_tab`;
 
-getCurrentActiveTab();
-
-// Get the position index of the current active tab
-function getCurrentActiveTab() {
-  chrome.tabs.query({currentWindow: true, active: true}, tabs => {
-    console.log(tabs[0].windowId + ' - chrome.tabs.query - set currentIndex = index: ' + tabs[0].index);
-    currentIndex[tabs[0].windowId] = tabs[0].index;
-  });
-  // Fallback
-  chrome.windows.getCurrent(window => {
-    if (!Number.isInteger(currentIndex[window.id])) {
-      // Last position (default behavior)
-      chrome.tabs.query({currentWindow: true}, tabs => {
-        console.log(tabs[0].windowId + ' - fallback - set currentIndex = tabs.length: ' + tabs.length);
-        currentIndex[tabs[0].windowId] = tabs.length;
-      });
-    }
-  });
-}
-
-// I like to move it!
-function moveIt(tab, event) {
-  console.log(tab.windowId + ' - chrome.tabs.' + event + ' - get new tab.index: ' + tab.index);
-  console.log(tab.windowId + ' - chrome.tabs.' + event + ' - get currentIndex: ' + currentIndex[tab.windowId]);
-  if (Number.isInteger(currentIndex[tab.windowId])) {
-    const moveToIndex = currentIndex[tab.windowId] + 1;
-
-    // Current is where it will move :-)
-    currentIndex[tab.windowId] = moveToIndex;
-
-    // Nothing to do
-    if (tab.index === moveToIndex) {
-      console.log(tab.windowId + ' - chrome.tabs.' + event + ' - tab.index: ' + tab.index + ' == moveToIndex: ' + moveToIndex + ' (nothing to do)');
-      return;
-    }
-
-    // Move!
-    chrome.tabs.move(tab.id, {
-      index: moveToIndex
-    });
-    console.log(tab.windowId + ' - chrome.tabs.' + event + ' - move to: ' + moveToIndex);
-  }
-}
-
-/**
- * Move the new tab after the current one.
- */
-// On created
-chrome.tabs.onCreated.addListener(tab => {
-  chrome.tabs.onMoved.removeListener(eventOnMoved);
-  moveIt(tab, 'onCreated');
-  chrome.tabs.onMoved.addListener(eventOnMoved);
+chrome.runtime.onInstalled.addListener(() => {
+    storeActiveTab();
+    trackActiveWindow();
+    startUpdateTabPositions();
+    startUpdateParentPositions();
 });
 
 /**
- * Remember the current tab index.
+ * Track the active window
  */
-// On extension install/update
-chrome.runtime.onInstalled.addListener(details => {
-  if (details.reason === 'install' || details.reason === 'update') {
-    console.log('chrome.runtime.onInstalled');
-    getCurrentActiveTab();
-  }
-});
-// On window focused
-chrome.windows.onFocusChanged.addListener(windowId => {
-  // @see https://developer.chrome.com/extensions/windows#property-WINDOW_ID_NONE
-  if (windowId !== -1 && windowId !== -2) {
-    chrome.tabs.getSelected(chrome.tabs.windowId, tab => {
-      console.log(windowId + ' - chrome.windows.onFocusChanged - set currentIndex = tab.index: ' + tab.index);
-      currentIndex[windowId] = tab.index;
+function trackActiveWindow() {
+    chrome.tabs.onActivated.addListener(storeActiveTab);
+    chrome.windows.onFocusChanged.addListener(windowId => {
+        if (windowId !== chrome.windows.WINDOW_ID_NONE) {
+            storeActiveTab({ windowId });
+        }
     });
-  }
-});
-// On tab activated
-chrome.tabs.onActivated.addListener(activeInfo => {
-  if (chrome.runtime.lastError) {
-    console.log(chrome.runtime.lastError.message);
-  } else {
-    chrome.tabs.get(activeInfo.tabId, tab => {
-      console.log(tab.windowId + ' - chrome.tabs.onActivated - set currentIndex = tab.index: ' + tab.index);
-      currentIndex[tab.windowId] = tab.index;
+}
+
+/**
+ * Query and store the active tab
+ *
+ * @param {*} {windowId} Optional object containing windowId
+ */
+function storeActiveTab({ windowId } = {}) {
+    if (logErrorExisting("storeActiveTab")) {
+        return;
+    }
+    // get the active tab
+    chrome.tabs.query(
+        {
+            active: true,
+            lastFocusedWindow: true,
+            windowType: "normal",
+            windowId
+        },
+        ({ 0: { id, windowId: activeWindowId, index, openerTabId } }) => {
+            console.log(`Active tab: ${id}, opened by tab: ${openerTabId}`);
+            // and store it's information
+            chrome.storage.local.set({
+                [ACTIVE_TAB_KEY]: { tabId: id, windowId: activeWindowId, tabIndex: index, parentTabId: openerTabId }
+            });
+        }
+    );
+}
+
+/**
+ * When a new tab is created, track its position as well
+ */
+function startUpdateTabPositions() {
+    chrome.tabs.onCreated.addListener(newTab => {
+        chrome.storage.local.get(ACTIVE_TAB_KEY, ({ [ACTIVE_TAB_KEY]: { tabId, windowId, tabIndex } }) => {
+            if (logErrorExisting("startUpdateTabPosition")) {
+                return;
+            }
+            if (newTab.windowId === windowId) {
+                chrome.tabs.move(newTab.id, { index: tabIndex + 1 });
+                console.log(`Moved new tab: ${newTab.id} next to ${tabId}`);
+            }
+        });
     });
-  }
-});
-// On tab manually moved
-chrome.tabs.onMoved.addListener(eventOnMoved);
+}
+
+/**
+ * When a tab is closed, attempt to go back to its parent
+ * if possible
+ */
+function startUpdateParentPositions() {
+    chrome.tabs.onRemoved.addListener((closedTabId, { windowId: closedTabWindowId, isWindowClosing }) => {
+        // if the window is not closing...
+        if (!isWindowClosing) {
+            // get the active tab info and...
+            chrome.storage.local.get(ACTIVE_TAB_KEY, ({ [ACTIVE_TAB_KEY]: { tabId, windowId, parentTabId } }) => {
+                // if the closing tab is not in the same window as our active tab...
+                if (closedTabWindowId !== windowId) {
+                    // do nothing
+                    return;
+                }
+                console.log(`Closed tab: ${closedTabId}`);
+                // if the active tab's parent is closing...
+                if (parentTabId === closedTabId) {
+                    // update our active tab (mostly to remove the parentTabId)
+                    storeActiveTab();
+                    return;
+                }
+                // if closing the active tab
+                if (parentTabId && tabId === closedTabId) {
+                    // tell chrome to make the parent tab active
+                    console.log(`Active tab (${tabId}) closed, activating parent (${parentTabId})`);
+                    chrome.tabs.update(parentTabId, { active: true });
+                }
+            });
+        }
+    });
+}
+
+/**
+ * Logs any runtime errors
+ *
+ * @param tag An identifier for where this function was called from
+ * @returns true or false if any error was logged
+ */
+function logErrorExisting(tag) {
+    if (chrome.runtime.lasError) {
+        console.error(`${tag}: ${chrome.runtime.lasError.message}`);
+        return true;
+    }
+    return false;
+}
