@@ -1,0 +1,8 @@
+dist: trusty
+language: node_js
+deploy:
+  provider: script
+  edge: true
+  script: npm run release
+  on:
+    tags: true
