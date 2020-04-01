@@ -97,7 +97,7 @@ function startUpdateParentPositions() {
                 // if closing the active tab
                 if (parentTabId && tabId === closedTabId) {
                     // tell chrome to make the parent tab active
-                    console.log(`Active tab (${tabId}) closed, activating parent (${parentTabId})`);
+                    console.log(`Tab (${tabId}) closed, activating parent (${parentTabId})`);
                     chrome.tabs.update(parentTabId, { active: true });
                 }
             });
