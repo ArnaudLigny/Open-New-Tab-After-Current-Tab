@@ -1,0 +1,6 @@
+title: Open-New-Tab-After-Current-Tab
+content:
+  dir: .
+static:
+  dir: docs
+  target: docs
