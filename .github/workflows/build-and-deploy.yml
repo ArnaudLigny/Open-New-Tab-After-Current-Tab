@@ -4,10 +4,8 @@ on:
     branches:
       - master
 env:
-  CECIL_VERSION: '5.29.1'
+  CONFIG: 'cecil.yml'
   CECIL_BASEURL: '/'
-  CONFIG: 'cecil.yml'  
-  INTL: 'no' # 'yes' if internationalization extensions are required
   EMAIL: arnaud@ligny.org
   GH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
   BUILD_DIR: _site
@@ -18,13 +16,6 @@ jobs:
     container:
       image: php:7.2-cli-alpine
     steps:
-    - name: Install PHP extensions
-      if: env.INTL == 'yes'
-      run: |
-        apk update
-        apk add --no-cache gettext-dev icu-dev
-        docker-php-ext-install -j$(nproc) gettext
-        docker-php-ext-install -j$(nproc) intl
     - name: Checkout source
       uses: actions/checkout@v2
       with:
