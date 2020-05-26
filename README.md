@@ -10,7 +10,9 @@ With this extension a new tab opened with the keyboard shortcut (<kbd>⌘ Cmd</k
 
 ![Demo](/docs/Open-New-Tab-After-Current-Tab.gif)
 
-## Development [![Build Status](https://travis-ci.com/Narno/Open-New-Tab-After-Current-Tab.svg?branch=master)](https://travis-ci.com/Narno/Open-New-Tab-After-Current-Tab)
+## Development
+
+ [![Build Status](https://travis-ci.com/Narno/Open-New-Tab-After-Current-Tab.svg?branch=master)](https://travis-ci.com/Narno/Open-New-Tab-After-Current-Tab)
 
 ```bash
 git clone https://github.com/Narno/Open-New-Tab-After-Current-Tab.git && cd Open-New-Tab-After-Current-Tab
