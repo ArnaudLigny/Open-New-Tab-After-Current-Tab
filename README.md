@@ -8,7 +8,7 @@ By default Google Chrome open a new tab at the end of the row of tabs: it's ofte
 
 With this extension a new tab opened with the keyboard shortcut (<kbd>⌘ Cmd</kbd>+<kbd>T</kbd>) or with the "plus" button will be opened just after the current active tab.
 
-![Demo](/docs/Open-New-Tab-After-Current-Tab.gif)
+![Demo](docs/Open-New-Tab-After-Current-Tab.gif)
 
 ## Development
 
