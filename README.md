@@ -2,7 +2,7 @@
 
 > _Open New Tab After Current Tab_ is a Google Chrome extension that opens new tab after the active tab, instead of last position.
 
-[![Open New Tab After Current Tab available in the Chrome Web Store](https://developer.chrome.com/webstore/images/ChromeWebStore_BadgeWBorder_v2_206x58.png)](https://chrome.google.com/webstore/detail/open-new-tab-after-curren/mmcgnaachjapbbchcpjihhgjhpfcnoan)
+[![Open New Tab After Current Tab available in the Chrome Web Store](docs/ChromeWebStoreBadgeWBorder.png)](https://chrome.google.com/webstore/detail/open-new-tab-after-curren/mmcgnaachjapbbchcpjihhgjhpfcnoan)
 
 By default Google Chrome open a new tab at the end of the row of tabs: it's often not ever intuitive.
 
