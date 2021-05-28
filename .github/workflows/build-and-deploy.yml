@@ -57,4 +57,4 @@ jobs:
       with:
         name: _site
     - name: Deploy site to GitHub Pages
-      uses: Cecilapp/GitHub-Pages-deploy@2.0.1
+      uses: Cecilapp/GitHub-Pages-deploy@v3
