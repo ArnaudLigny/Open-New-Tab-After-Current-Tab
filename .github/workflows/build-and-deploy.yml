@@ -37,7 +37,7 @@ jobs:
         if [[ -z "$CONFIG" ]]; then
           php cecil.phar build -v
         else
-          php cecil.phar build -v --config=cecil.yml
+          php cecil.phar build -v --config=$CONFIG
         fi
         echo "### Cecil Action done"
     - name: Upload site to Artifacts
