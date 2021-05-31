@@ -4,8 +4,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-'use strict';
-
 const currentIndex = [];
 const eventOnMoved = (tabId, moveInfo) => {
   console.log(moveInfo.windowId + ' - chrome.tabs.onMoved - set currentIndex = moveInfo.toIndex: ' + moveInfo.toIndex);
