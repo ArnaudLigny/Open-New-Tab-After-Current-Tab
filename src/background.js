@@ -76,24 +76,23 @@ chrome.runtime.onInstalled.addListener(details => {
 });
 // On window focused
 chrome.windows.onFocusChanged.addListener(windowId => {
-  // @see https://developer.chrome.com/extensions/windows#property-WINDOW_ID_NONE
-  if (windowId !== -1 && windowId !== -2) {
-    chrome.tabs.getSelected(chrome.tabs.windowId, tab => {
-      console.log(windowId + ' - chrome.windows.onFocusChanged - set currentIndex = tab.index: ' + tab.index);
-      currentIndex[windowId] = tab.index;
-    });
-  }
+  setTimeout(() => { // https://www.reddit.com/r/chrome_extensions/comments/no7igm/chrometabsonactivatedaddlistener_not_working/
+    if (windowId !== -1 && windowId !== -2) { // @see https://developer.chrome.com/docs/extensions/reference/windows/#properties
+      chrome.tabs.query({windowId, active: true}, tabs => {
+        console.log(tabs[0].windowId + ' - chrome.windows.onFocusChanged - set currentIndex = tab.index: ' + tabs[0].index);
+        currentIndex[tabs[0].windowId] = tabs[0].index;
+      });
+    }
+  }, 300);
 });
 // On tab activated
-chrome.tabs.onActivated.addListener(activeInfo => {
-  if (chrome.runtime.lastError) {
-    console.log(chrome.runtime.lastError.message);
-  } else {
-    chrome.tabs.get(activeInfo.tabId, tab => {
-      console.log(tab.windowId + ' - chrome.tabs.onActivated - set currentIndex = tab.index: ' + tab.index);
-      currentIndex[tab.windowId] = tab.index;
+chrome.tabs.onActivated.addListener(activeInfo => { // eslint-disable-line no-unused-vars
+  setTimeout(() => {
+    chrome.tabs.query({active: true, lastFocusedWindow: true, currentWindow: true}, tabs => {
+      console.log(tabs[0].windowId + ' - chrome.tabs.onActivated - set currentIndex = tab.index: ' + tabs[0].index);
+      currentIndex[tabs[0].windowId] = tabs[0].index;
     });
-  }
+  }, 300);
 });
 // On tab manually moved
 chrome.tabs.onMoved.addListener(eventOnMoved);
