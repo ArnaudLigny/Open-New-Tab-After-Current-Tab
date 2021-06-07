@@ -83,7 +83,7 @@ chrome.windows.onFocusChanged.addListener(windowId => {
         currentIndex[tabs[0].windowId] = tabs[0].index;
       });
     }
-  }, 100);
+  }, 300);
 });
 // On tab activated
 chrome.tabs.onActivated.addListener(activeInfo => { // eslint-disable-line no-unused-vars
@@ -92,7 +92,7 @@ chrome.tabs.onActivated.addListener(activeInfo => { // eslint-disable-line no-un
       console.log(tabs[0].windowId + ' - chrome.tabs.onActivated - set currentIndex = tab.index: ' + tabs[0].index);
       currentIndex[tabs[0].windowId] = tabs[0].index;
     });
-  }, 100);
+  }, 300);
 });
 // On tab manually moved
 chrome.tabs.onMoved.addListener(eventOnMoved);
