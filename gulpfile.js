@@ -10,7 +10,7 @@ async function clean() {
 }
 
 function build() {
-  return src('src/*.*')
+  return src('src/**')
     .pipe(dest('build'));
 }
 
