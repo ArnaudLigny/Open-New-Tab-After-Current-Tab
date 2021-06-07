@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - master
+    paths:
+      - 'docs/**'
+      - '**.md'
 env:
   CONFIG: 'cecil.yml'
   CECIL_BASEURL: '/'
