@@ -78,7 +78,7 @@ chrome.runtime.onInstalled.addListener(details => {
 chrome.windows.onFocusChanged.addListener(windowId => {
   setTimeout(() => { // https://www.reddit.com/r/chrome_extensions/comments/no7igm/chrometabsonactivatedaddlistener_not_working/
     if (windowId !== -1 && windowId !== -2) { // @see https://developer.chrome.com/docs/extensions/reference/windows/#properties
-      chrome.tabs.query({ windowId: windowId, active: true }, tabs => {
+      chrome.tabs.query({windowId, active: true}, tabs => {
         console.log(tabs[0].windowId + ' - chrome.windows.onFocusChanged - set currentIndex = tab.index: ' + tabs[0].index);
         currentIndex[tabs[0].windowId] = tabs[0].index;
       });
@@ -86,9 +86,9 @@ chrome.windows.onFocusChanged.addListener(windowId => {
   }, 100);
 });
 // On tab activated
-chrome.tabs.onActivated.addListener(activeInfo => {
+chrome.tabs.onActivated.addListener(activeInfo => { // eslint-disable-line no-unused-vars
   setTimeout(() => {
-    chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true, 'currentWindow': true }, tabs => {
+    chrome.tabs.query({active: true, lastFocusedWindow: true, currentWindow: true}, tabs => {
       console.log(tabs[0].windowId + ' - chrome.tabs.onActivated - set currentIndex = tab.index: ' + tabs[0].index);
       currentIndex[tabs[0].windowId] = tabs[0].index;
     });
