@@ -5,6 +5,13 @@ node_js:
 env:
   - EXTENSION_ID=mmcgnaachjapbbchcpjihhgjhpfcnoan
 deploy:
+  # Chrome Webstore
+  - provider: script
+    edge: true
+    script: npm run release
+    on:
+      branch: master
+      tags: true
   # GitHub release
   - provider: releases
     edge: true
@@ -12,13 +19,6 @@ deploy:
     token: $GH_TOKEN
     file_glob: true
     file: "dist/*"
-    on:
-      branch: master
-      tags: true
-  # Chrome Webstore
-  - provider: script
-    edge: true
-    script: npm run release
     on:
       branch: master
       tags: true
