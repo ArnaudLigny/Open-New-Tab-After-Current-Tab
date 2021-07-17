@@ -43,11 +43,13 @@ function moveIt(tab, event) {
   if (Number.isInteger(currentIndex[tab.windowId])) {
     const moveToIndex = currentIndex[tab.windowId] + 1;
     currentIndex[tab.windowId] = moveToIndex;
+
     if (tab.index === moveToIndex) {
       console.log(tab.windowId + ': tabs.' + event + ' - tab.index: ' + tab.index + ' === moveToIndex: ' + moveToIndex + ' (nothing to do)');
 
       return;
     }
+
     chrome.tabs.move(tab.id, {
       index: moveToIndex
     });
