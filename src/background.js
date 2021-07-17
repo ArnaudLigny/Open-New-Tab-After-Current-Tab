@@ -94,3 +94,11 @@ chrome.tabs.onActivated.addListener(activeInfo => { // eslint-disable-line no-un
   }, 300);
 });
 chrome.tabs.onMoved.addListener(eventOnMoved);
+chrome.tabs.onRemoved.addListener((tabId, removeInfo) => { // eslint-disable-line no-unused-vars
+  setTimeout(() => {
+    chrome.tabs.query({active: true, lastFocusedWindow: true, currentWindow: true}, tabs => {
+      console.log(tabs[0].windowId + ': tabs.onRemoved - set currentIndex = tab.index: ' + tabs[0].index);
+      currentIndex[tabs[0].windowId] = tabs[0].index;
+    });
+  }, 300);
+});
