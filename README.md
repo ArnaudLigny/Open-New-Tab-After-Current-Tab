@@ -1,6 +1,6 @@
 # Open-New-Tab-After-Current-Tab
 
-> _Open New Tab After Current Tab_ is a [Chromium](https://m.wikipedia.org/wiki/Chromium) ([Google Chrome](https://chrome.google.com/webstore/detail/open-new-tab-after-curren/mmcgnaachjapbbchcpjihhgjhpfcnoan), [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/open-new-tab-after-curren/deebimacbjlpdcfbpacpckoccjnojacb), Opera, etc.) extension that opens new tab after the active tab, instead of last position.
+> _Open New Tab After Current Tab_ is a [Chromium](https://m.wikipedia.org/wiki/Chromium_(web_browser)) ([Google Chrome](https://chrome.google.com/webstore/detail/open-new-tab-after-curren/mmcgnaachjapbbchcpjihhgjhpfcnoan), [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/open-new-tab-after-curren/deebimacbjlpdcfbpacpckoccjnojacb), Opera, etc.) extension that opens new tab after the active tab, instead of last position.
 
 [![Open New Tab After Current Tab available in the Chrome Web Store](docs/ChromeWebStoreBadgeWBorder.png)](https://chrome.google.com/webstore/detail/open-new-tab-after-curren/mmcgnaachjapbbchcpjihhgjhpfcnoan) [![Open New Tab After Current Tab available in Microsoft Edge Addons](docs/MicrosoftEdgeAddonsBadge.png)](https://microsoftedge.microsoft.com/addons/detail/open-new-tab-after-curren/deebimacbjlpdcfbpacpckoccjnojacb)
 
