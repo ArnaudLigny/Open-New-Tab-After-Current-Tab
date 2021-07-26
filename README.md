@@ -19,9 +19,13 @@ npm install
 npm run build
 ```
 
+## Source
+
+https://github.com/Narno/Open-New-Tab-After-Current-Tab
+
 ## License
 
-_Open New Tab After Current Tab_ is a free software distributed under the terms of the MIT license.
+_Open New Tab After Current Tab_ is a free software distributed under the terms of the [MIT license](https://opensource.org/licenses/MIT).
 
 © [Arnaud Ligny](https://arnaudligny.fr)
 
