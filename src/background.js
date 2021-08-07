@@ -65,20 +65,19 @@ chrome.tabs.onCreated.addListener(tab => {
 });
 
 /**
- * Focus on the the tab on the left immediately after the current one is closed.
+ * Focus on the tab on the left immediately before the current one is closed.
  */
 // On removed
 chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
   const currIdx = currentIndex[removeInfo.windowId];
-  console.log("Tab being removed at index ", currIdx);
-  const nextIdx = currIdx - 1;
-  if (nextIdx < 0) {
+  console.log(removeInfo.windowId + ' - chrome.tabs.onRemoved - index: ' + currIdx);
+  const previousIdx = currIdx - 1;
+  if (previousIdx < 0) {
     return;
   }
 
-  console.log("Refocusing to the tab at index ", nextIdx);
-  chrome.tabs.highlight({'tabs': nextIdx}, win => {
-    console.log("Refocused to the tab at index ", nextIdx);
+  chrome.tabs.highlight({tabs: previousIdx}, win => { // eslint-disable-line no-unused-vars
+    console.log(removeInfo.windowId + ' - chrome.tabs.highlight - index: ' + previousIdx);
   });
 });
 
