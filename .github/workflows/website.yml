@@ -1,0 +1,50 @@
+name: Build & deploy website
+
+on:
+  push:
+    branches:
+    - master
+    paths:
+    - '.github/workflows/website.yml'
+    - 'docs/**'
+    - '**.md'
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v2
+
+    - name: Build site with Cecil
+      uses: Cecilapp/Cecil-Action@v3
+      with:
+        config: 'cecil.yml'
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: _site
+        path: _site
+        if-no-files-found: error
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: _site
+        path: _site
+
+    - name: Deploy site to GitHub Pages
+      uses: Cecilapp/GitHub-Pages-deploy@v3
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        email: arnaud@ligny.org
