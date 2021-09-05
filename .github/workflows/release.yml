@@ -67,34 +67,6 @@ jobs:
         CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
         REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
 
-  publish_to_firefox:
-    name: Publish to Firefox Add-ons
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout source
-      uses: actions/checkout@v2
-
-    - uses: actions/setup-node@v2
-      with:
-        node-version: 14
-
-    - name: Install packages
-      run: npm install
-
-    - name: Download build artifact
-      uses: actions/download-artifact@v2
-      with:
-        name: build
-        path: build
-
-    - name: Publish
-      id: publish-firefox
-      run: npm run release:amo
-      env:
-        WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
-        WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
-
   publish_to_github:
     name: Publish to GitHub
     needs: build
