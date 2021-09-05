@@ -1,0 +1,116 @@
+name: Release extension
+
+env:
+  EXTENSION_ID: 'mmcgnaachjapbbchcpjihhgjhpfcnoan'
+
+on:
+  release:
+    types:
+    - published
+
+jobs:
+  build:
+    name: Build extension
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v2
+
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 14
+
+    - name: Install packages
+      run: npm install
+
+    - name: Run build
+      run: npm run build
+
+    - name: Upload build artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: build
+        path: build
+
+    - name: Upload dist artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: dist
+        path: dist
+
+  publish_to_chrome:
+    name: Publish to Chrome Web Store
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v2
+
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 14
+
+    - name: Install packages
+      run: npm install
+
+    - name: Download build artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: build
+        path: build
+
+    - name: Publish
+      id: publish-chrome
+      run: npm run release:cws
+      env:
+        CLIENT_ID: ${{ secrets.CLIENT_ID }}
+        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+
+  publish_to_firefox:
+    name: Publish to Firefox Add-ons
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v2
+
+    - uses: actions/setup-node@v2
+      with:
+        node-version: 14
+
+    - name: Install packages
+      run: npm install
+
+    - name: Download build artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: build
+        path: build
+
+    - name: Publish
+      id: publish-firefox
+      run: npm run release:amo
+      env:
+        WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
+        WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
+
+  publish_to_github:
+    name: Publish to GitHub
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download dist artifact
+      uses: actions/download-artifact@v2
+      with:
+        name: dist
+        path: dist
+
+    - name: Add artifact to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: dist/*
+        tag: ${{ github.ref }}
+        file_glob: true
