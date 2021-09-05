@@ -10,7 +10,7 @@ By default a new tab is opened at the end of the row of tabs, but it's not intui
 
 ## Development
 
- [![Build Status](https://api.travis-ci.com/Narno/Open-New-Tab-After-Current-Tab.svg?branch=master)](https://travis-ci.com/Narno/Open-New-Tab-After-Current-Tab)
+[![Test](https://github.com/Narno/Open-New-Tab-After-Current-Tab/actions/workflows/test.yml/badge.svg)](https://github.com/Narno/Open-New-Tab-After-Current-Tab/actions/workflows/test.yml)
 
 ```bash
 npm install
