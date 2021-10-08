@@ -10,7 +10,7 @@ By default a new tab is opened at the end of the row of tabs, but it's not intui
 
 ## Support
 
-<https://github.com/Narno/Open-New-Tab-After-Current-Tab/issues>
+<https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab/issues>
 
 ## Development
 
@@ -18,7 +18,7 @@ By default a new tab is opened at the end of the row of tabs, but it's not intui
 
 ### Source
 
-<https://github.com/Narno/Open-New-Tab-After-Current-Tab.git>
+<https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab.git>
 
 ### Build
 
