@@ -6,10 +6,15 @@
  */
 
 const currentIndex = [];
+let currentGroup = '-1';
 
 const eventOnMoved = (tabId, moveInfo) => {
   console.log(moveInfo.windowId + ': tabs.onMoved - set currentIndex = moveInfo.toIndex: ' + moveInfo.toIndex);
   currentIndex[moveInfo.windowId] = moveInfo.toIndex;
+  chrome.tabs.query({currentWindow: true, active: true}, tabs => {
+    console.log(tabs[0].windowId + ': tabs.onMoved - set currentGroup = tab.groupId: ' + tabs[0].groupId);
+    currentGroup = tabs[0].groupId;
+  });
 };
 
 getCurrentActiveTab();
@@ -21,6 +26,8 @@ function getCurrentActiveTab() {
   chrome.tabs.query({currentWindow: true, active: true}, tabs => {
     console.log(tabs[0].windowId + ': tabs.query - set currentIndex = tab.index: ' + tabs[0].index);
     currentIndex[tabs[0].windowId] = tabs[0].index;
+    console.log(tabs[0].windowId + ': tabs.query - set currentGroup = tab.groupId: ' + tabs[0].groupId);
+    currentGroup = tabs[0].groupId;
   });
   // Fallback
   chrome.windows.getCurrent(window => {
@@ -29,6 +36,7 @@ function getCurrentActiveTab() {
       chrome.tabs.query({currentWindow: true}, tabs => {
         console.log(tabs[0].windowId + ': fallback - set currentIndex = tabs.length: ' + tabs.length);
         currentIndex[tabs[0].windowId] = tabs.length;
+        currentGroup = '-1';
       });
     }
   });
@@ -53,6 +61,13 @@ function moveIt(tab, event) {
     chrome.tabs.move(tab.id, {
       index: moveToIndex,
     });
+    if (currentGroup !== '-1') {
+      chrome.tabs.group({
+        tabIds: tab.id,
+        groupId: currentGroup,
+      });
+    }
+
     console.log(tab.windowId + ': tabs.' + event + ' - move to: ' + moveToIndex);
   }
 }
@@ -81,6 +96,8 @@ chrome.windows.onFocusChanged.addListener(windowId => {
       chrome.tabs.query({windowId, active: true}, tabs => {
         console.log(tabs[0].windowId + ': windows.onFocusChanged - set currentIndex = tab.index: ' + tabs[0].index);
         currentIndex[tabs[0].windowId] = tabs[0].index;
+        console.log(tabs[0].windowId + ': windows.onFocusChanged - set currentGroup = tab.groupId: ' + tabs[0].groupId);
+        currentGroup = tabs[0].groupId;
       });
     }
   }, 300);
@@ -90,6 +107,8 @@ chrome.tabs.onActivated.addListener(activeInfo => { // eslint-disable-line no-un
     chrome.tabs.query({active: true, lastFocusedWindow: true, currentWindow: true}, tabs => {
       console.log(tabs[0].windowId + ': tabs.onActivated - set currentIndex = tab.index: ' + tabs[0].index);
       currentIndex[tabs[0].windowId] = tabs[0].index;
+      console.log(tabs[0].windowId + ': tabs.onActivated - set currentGroup = tab.groupId: ' + tabs[0].groupId);
+      currentGroup = tabs[0].groupId;
     });
   }, 300);
 });
@@ -99,6 +118,8 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => { // eslint-disable-lin
     chrome.tabs.query({active: true, lastFocusedWindow: true, currentWindow: true}, tabs => {
       console.log(tabs[0].windowId + ': tabs.onRemoved - set currentIndex = tab.index: ' + tabs[0].index);
       currentIndex[tabs[0].windowId] = tabs[0].index;
+      console.log(tabs[0].windowId + ': tabs.onRemoved - set currentGroup = tab.groupId: ' + tabs[0].groupId);
+      currentGroup = tabs[0].groupId;
     });
   }, 300);
 });

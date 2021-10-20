@@ -1,8 +1,8 @@
 {
   "name": "Open New Tab After Current Tab",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "description": "__MSG_extDescription__",
-  "homepage_url": "https://narno.dev/Open-New-Tab-After-Current-Tab/",
+  "homepage_url": "https://dev.ligny.org/Open-New-Tab-After-Current-Tab/",
   "author": "Arnaud Ligny",
   "manifest_version": 2,
   "minimum_chrome_version": "52",
