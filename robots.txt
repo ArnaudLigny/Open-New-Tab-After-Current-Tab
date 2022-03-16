@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 Disallow: /404.html
-Sitemap: /sitemap.xml
+Sitemap: https://dev.ligny.org/Open-New-Tab-After-Current-Tab/sitemap.xml
