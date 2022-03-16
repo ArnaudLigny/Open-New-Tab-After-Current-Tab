@@ -8,6 +8,7 @@ on:
     - '.github/workflows/website.yml'
     - 'docs/**'
     - '**.md'
+    - 'cecil.yml'
 
 jobs:
   build:
