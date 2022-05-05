@@ -12,17 +12,37 @@ By default a new tab is opened at the end of the row of tabs, but it's not intui
 
 ## Development
 
-<a href="https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab/actions/workflows/test.yml"><img src="https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab/actions/workflows/test.yml/badge.svg" alt="Test workflow" /></a>
-
 ### Source
 
 <https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab.git>
 
-### Build
+### Install
 
 ```bash
 npm install
+```
+
+### Test
+
+<a href="https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab/actions/workflows/test.yml"><img src="https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab/actions/workflows/test.yml/badge.svg" alt="Test workflow" /></a>
+
+### Build
+
+```bash
 npm run build
+```
+
+Actions:
+
+1. process files (with [Gulp](https://gulpjs.com)), result is stored in `build/`
+2. create a ZIP archive from `build/` in `dist/`
+
+### Deploy to stores
+
+<a href="https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab/actions/workflows/release.yml"><img src="https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab/actions/workflows/release.yml/badge.svg" alt="Release workflow" /></a>
+
+```bash
+npm run release
 ```
 
 ## License
