@@ -7,10 +7,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Narno/Open-New-Tab-After-Current-Tab.git"
+    "url": "https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab.git"
   },
   "bugs": {
-    "url": "https://github.com/Narno/Open-New-Tab-After-Current-Tab/issues"
+    "url": "https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab/issues"
   },
   "main": "gulpfile.js",
   "scripts": {
