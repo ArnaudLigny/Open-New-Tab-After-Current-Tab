@@ -16,15 +16,15 @@
   "scripts": {
     "test": "xo",
     "build": "gulp dist",
-    "release:cws": "cd build && webstore upload --auto-publish",
+    "release:cws": "cd build && chrome-webstore-upload upload --auto-publish",
     "release": "npm run build && npm run release:cws"
   },
   "devDependencies": {
-    "chrome-webstore-upload-cli": "^1.2",
+    "chrome-webstore-upload-cli": "^2.1",
     "del": "^6.0",
     "gulp": "^4.0",
     "gulp-zip": "^5.1",
-    "xo": "^0.44"
+    "xo": "^0.48"
   },
   "xo": {
     "space": true,
