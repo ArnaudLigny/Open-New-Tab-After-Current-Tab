@@ -12,7 +12,7 @@ By default a new tab is opened at the end of the row of tabs, but it's not intui
 
 ## Development
 
-[![Test](https://github.com/Narno/Open-New-Tab-After-Current-Tab/actions/workflows/test.yml/badge.svg)](https://github.com/Narno/Open-New-Tab-After-Current-Tab/actions/workflows/test.yml)
+<a href="https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab/actions/workflows/test.yml"><img src="https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab/actions/workflows/test.yml/badge.svg" alt="Test workflow" /></a>
 
 ### Source
 
