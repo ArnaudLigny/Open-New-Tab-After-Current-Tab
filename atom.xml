@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="/atom.xsl" media="all"?>
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
   <id>https://dev.ligny.org/Open-New-Tab-After-Current-Tab/</id>
   <title>Open-New-Tab-After-Current-Tab</title>
   <subtitle><![CDATA[Google Chrome extension that opens new tab after the active tab, instead of last position.]]></subtitle>
   <link href="https://dev.ligny.org/Open-New-Tab-After-Current-Tab/atom.xml" rel="self" type="application/atom+xml" />
   <link href="https://dev.ligny.org/Open-New-Tab-After-Current-Tab/" rel="alternate" type="text/html" />
-  <updated>2022-05-05T01:35:37+00:00</updated>
+  <updated>2022-07-24T14:44:12+00:00</updated>
   <author>
     <name>Open-New-Tab-After-Current-Tab</name>
     <uri>https://dev.ligny.org/Open-New-Tab-After-Current-Tab/</uri>
