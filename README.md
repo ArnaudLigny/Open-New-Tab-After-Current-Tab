@@ -26,6 +26,10 @@ npm install
 
 <a href="https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab/actions/workflows/test.yml"><img src="https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab/actions/workflows/test.yml/badge.svg" alt="Test workflow" /></a>
 
+```bash
+npm run test
+```
+
 ### Build
 
 ```bash
@@ -34,7 +38,7 @@ npm run build
 
 Actions:
 
-1. process files (with [Gulp](https://gulpjs.com)), result is stored in `build/`
+1. process files (with [Gulp](https://gulpjs.com)) and store result in `build/`
 2. create a ZIP archive from `build/` in `dist/`
 
 ### Deploy to stores
