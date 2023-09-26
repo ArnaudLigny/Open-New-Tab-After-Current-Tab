@@ -61,7 +61,7 @@ function moveIt(tab, event) {
     chrome.tabs.move(tab.id, {
       index: moveToIndex,
     }, movedTab => {
-      // workaround for the Chrome and Edge scrollable tabstrip issue
+      // Workaround for the Chrome and Edge scrollable tabstrip issue
       chrome.tabs.update(movedTab.openerTabId, {active: true}, () => {
         console.log(tab.windowId + ': active moved tab');
         chrome.tabs.update(movedTab.id, {active: true});
