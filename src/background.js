@@ -67,7 +67,7 @@ function moveIt(tab, event) {
         chrome.tabs.update(movedTab.id, {active: true});
       });
     });
-    if (currentGroup !== '-1') {
+    if (currentGroup >= 0) {
       chrome.tabs.group({
         tabIds: tab.id,
         groupId: currentGroup,
