@@ -61,7 +61,7 @@ function moveIt(tab, event) {
     chrome.tabs.move(tab.id, {
       index: moveToIndex,
     });
-    if (currentGroup !== '-1') {
+    if (currentGroup >= 0) {
       chrome.tabs.group({
         tabIds: tab.id,
         groupId: currentGroup,
