@@ -20,11 +20,11 @@
     "release": "npm run build && npm run release:cws"
   },
   "devDependencies": {
-    "chrome-webstore-upload-cli": "^2.1",
-    "del": "^6.0",
+    "chrome-webstore-upload-cli": "^2.2",
+    "del": "^6.1",
     "gulp": "^4.0",
     "gulp-zip": "^5.1",
-    "xo": "^0.48"
+    "xo": "^0.56"
   },
   "xo": {
     "space": true,
