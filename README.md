@@ -10,19 +10,23 @@ By default a new tab is opened at the end of the row of tabs, but it's not intui
 
 <https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab/issues>
 
+### Known issues
+
+- New tab opened from the last tab in a group at the last position openes outside the group [#33](https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab/issues/33)
+
 ## Development
 
-### Source
+### Source code
 
 <https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab.git>
 
-### Install
+### Install dependencies
 
 ```bash
 npm install
 ```
 
-### Test
+### Run tests
 
 <a href="https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab/actions/workflows/test.yml"><img src="https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab/actions/workflows/test.yml/badge.svg" alt="Test workflow" /></a>
 
@@ -30,7 +34,7 @@ npm install
 npm run test
 ```
 
-### Build
+### Build package
 
 ```bash
 npm run build
