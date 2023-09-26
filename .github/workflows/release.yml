@@ -14,11 +14,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout source
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
-    - uses: actions/setup-node@v2
+    - uses: actions/setup-node@v3
       with:
-        node-version: 14
+        node-version: 16
 
     - name: Install packages
       run: npm install
@@ -27,13 +27,13 @@ jobs:
       run: npm run build
 
     - name: Upload build artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: build
         path: build
 
     - name: Upload dist artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: dist
         path: dist
@@ -44,17 +44,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout source
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
-    - uses: actions/setup-node@v2
+    - uses: actions/setup-node@v3
       with:
-        node-version: 14
+        node-version: 16
 
     - name: Install packages
       run: npm install
 
     - name: Download build artifact
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: build
         path: build
@@ -74,7 +74,7 @@ jobs:
 
     steps:
     - name: Download dist artifact
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: dist
         path: dist
