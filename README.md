@@ -13,6 +13,7 @@ By default a new tab is opened at the end of the row of tabs, but it's not intui
 ### Known issues
 
 - New tab opened from the last tab in a group at the last position openes outside the group [#33](https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab/issues/33)
+- Not compatible with `#scrollable-tabstrip` on Ungoogled Chromium [#38](https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab/issues/38)
 
 ## Development
 
