@@ -11,32 +11,39 @@ let currentGroup = '-1';
 const eventOnMoved = (tabId, moveInfo) => {
   console.log(moveInfo.windowId + ': tabs.onMoved - set currentIndex = moveInfo.toIndex: ' + moveInfo.toIndex);
   currentIndex[moveInfo.windowId] = moveInfo.toIndex;
+  chrome.storage.local.set({ 'currentIndex': currentIndex });
   chrome.tabs.query({currentWindow: true, active: true}, tabs => {
     console.log(tabs[0].windowId + ': tabs.onMoved - set currentGroup = tab.groupId: ' + tabs[0].groupId);
     currentGroup = tabs[0].groupId;
+    chrome.storage.local.set({ 'currentGroup': currentGroup });
   });
 };
 
-getCurrentActiveTab();
+//getCurrentActiveTab();
 
 /**
  * Get the position of the current active tab
  */
-function getCurrentActiveTab() {
-  chrome.tabs.query({currentWindow: true, active: true}, tabs => {
+async function getCurrentActiveTab() {
+  await chrome.tabs.query({currentWindow: true, active: true}, tabs => {
     console.log(tabs[0].windowId + ': tabs.query - set currentIndex = tab.index: ' + tabs[0].index);
     currentIndex[tabs[0].windowId] = tabs[0].index;
+    chrome.storage.local.set({ 'currentIndex': currentIndex });
     console.log(tabs[0].windowId + ': tabs.query - set currentGroup = tab.groupId: ' + tabs[0].groupId);
     currentGroup = tabs[0].groupId;
+    chrome.storage.local.set({ 'currentGroup': currentGroup });
   });
   // Fallback
-  chrome.windows.getCurrent(window => {
+  await chrome.windows.getCurrent(window => {
+    const currentIndex = chrome.storage.local.get('currentIndex');
     if (!Number.isInteger(currentIndex[window.id])) {
       // Last position (default behavior)
       chrome.tabs.query({currentWindow: true}, tabs => {
         console.log(tabs[0].windowId + ': fallback - set currentIndex = tabs.length: ' + tabs.length);
         currentIndex[tabs[0].windowId] = tabs.length;
+        chrome.storage.local.set({ 'currentIndex': currentIndex });
         currentGroup = '-1';
+        chrome.storage.local.set({ 'currentGroup': currentGroup });
       });
     }
   });
@@ -45,12 +52,14 @@ function getCurrentActiveTab() {
 /**
  * I like to move it!
  */
-function moveIt(tab, event) {
+async function moveIt(tab, event) {
+  const currentIndex = await chrome.storage.local.get('currentIndex');
   console.log(tab.windowId + ': tabs.' + event + ' - get tab.index: ' + tab.index);
   console.log(tab.windowId + ': tabs.' + event + ' - get currentIndex: ' + currentIndex[tab.windowId]);
   if (Number.isInteger(currentIndex[tab.windowId])) {
     const moveToIndex = currentIndex[tab.windowId] + 1;
     currentIndex[tab.windowId] = moveToIndex;
+    chrome.storage.local.set({ 'currentIndex': currentIndex });
 
     if (tab.index === moveToIndex) {
       console.log(tab.windowId + ': tabs.' + event + ' - tab.index: ' + tab.index + ' === moveToIndex: ' + moveToIndex + ' (nothing to do)');
@@ -67,6 +76,7 @@ function moveIt(tab, event) {
         chrome.tabs.update(movedTab.id, {active: true});
       });
     });
+    const currentGroup = await chrome.storage.local.get('currentGroup');
     if (currentGroup >= 0) {
       chrome.tabs.group({
         tabIds: tab.id,
@@ -102,8 +112,10 @@ chrome.windows.onFocusChanged.addListener(windowId => {
       chrome.tabs.query({windowId, active: true}, tabs => {
         console.log(tabs[0].windowId + ': windows.onFocusChanged - set currentIndex = tab.index: ' + tabs[0].index);
         currentIndex[tabs[0].windowId] = tabs[0].index;
+        chrome.storage.local.set({ 'currentIndex': currentIndex });
         console.log(tabs[0].windowId + ': windows.onFocusChanged - set currentGroup = tab.groupId: ' + tabs[0].groupId);
         currentGroup = tabs[0].groupId;
+        chrome.storage.local.set({ 'currentGroup': currentGroup });
       });
     }
   }, 300);
@@ -113,8 +125,10 @@ chrome.tabs.onActivated.addListener(activeInfo => { // eslint-disable-line no-un
     chrome.tabs.query({active: true, lastFocusedWindow: true, currentWindow: true}, tabs => {
       console.log(tabs[0].windowId + ': tabs.onActivated - set currentIndex = tab.index: ' + tabs[0].index);
       currentIndex[tabs[0].windowId] = tabs[0].index;
+      chrome.storage.local.set({ 'currentIndex': currentIndex });
       console.log(tabs[0].windowId + ': tabs.onActivated - set currentGroup = tab.groupId: ' + tabs[0].groupId);
       currentGroup = tabs[0].groupId;
+      chrome.storage.local.set({ 'currentGroup': currentGroup });
     });
   }, 300);
 });
@@ -124,8 +138,10 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => { // eslint-disable-lin
     chrome.tabs.query({active: true, lastFocusedWindow: true, currentWindow: true}, tabs => {
       console.log(tabs[0].windowId + ': tabs.onRemoved - set currentIndex = tab.index: ' + tabs[0].index);
       currentIndex[tabs[0].windowId] = tabs[0].index;
+      chrome.storage.local.set({ 'currentIndex': currentIndex });
       console.log(tabs[0].windowId + ': tabs.onRemoved - set currentGroup = tab.groupId: ' + tabs[0].groupId);
       currentGroup = tabs[0].groupId;
+      chrome.storage.local.set({ 'currentGroup': currentGroup });
     });
   }, 300);
 });

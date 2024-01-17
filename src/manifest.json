@@ -1,10 +1,10 @@
 {
   "name": "Open New Tab After Current Tab",
-  "version": "0.4.6",
+  "version": "0.5.0",
   "description": "__MSG_extDescription__",
   "homepage_url": "https://dev.ligny.org/Open-New-Tab-After-Current-Tab/",
   "author": "Arnaud Ligny",
-  "manifest_version": 2,
+  "manifest_version": 3,
   "minimum_chrome_version": "52",
   "default_locale": "en",
   "icons": {
@@ -14,9 +14,10 @@
     "128": "icon-128.png"
   },
   "background": {
-    "persistent": true,
-    "scripts": [
-      "background.js"
-    ]
-  }
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "permissions": [
+    "storage"
+  ]
 }
