@@ -22,7 +22,7 @@
   "devDependencies": {
     "chrome-webstore-upload-cli": "^2.2",
     "del": "^6.1",
-    "gulp": "^4.0",
+    "gulp": "^5.0",
     "gulp-zip": "^5.1",
     "xo": "^0.56"
   },
