@@ -54,7 +54,7 @@ jobs:
       run: npm install
 
     - name: Download build artifact
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4.1.7
       with:
         name: build
         path: build
@@ -74,7 +74,7 @@ jobs:
 
     steps:
     - name: Download dist artifact
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4.1.7
       with:
         name: dist
         path: dist
