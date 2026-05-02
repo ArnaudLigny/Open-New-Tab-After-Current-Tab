@@ -1,88 +1,77 @@
 name: Release extension
-
 env:
   EXTENSION_ID: 'mmcgnaachjapbbchcpjihhgjhpfcnoan'
-
 on:
   release:
     types:
-    - published
+      - published
 
 jobs:
   build:
     name: Build extension
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout source
-      uses: actions/checkout@v4
-
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 16
-
-    - name: Install packages
-      run: npm install
-
-    - name: Run build
-      run: npm run build
-
-    - name: Upload build artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: build
-        path: build
-
-    - name: Upload dist artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: dist
-        path: dist
+      - name: Checkout source
+        uses: actions/checkout@v6
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install packages
+        run: npm install
+      - name: Run build
+        run: npm run build
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: build
+          path: build
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist
 
   publish_to_chrome:
     name: Publish to Chrome Web Store
     needs: build
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout source
-      uses: actions/checkout@v4
-
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 16
-
-    - name: Install packages
-      run: npm install
-
-    - name: Download build artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: build
-        path: build
-
-    - name: Publish
-      id: publish-chrome
-      run: npm run release:cws
-      env:
-        CLIENT_ID: ${{ secrets.CLIENT_ID }}
-        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-        REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+      - name: Checkout source
+        uses: actions/checkout@v6
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install packages
+        run: npm install
+      - name: Download build artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: build
+          path: build
+      - name: Publish
+        id: publish-chrome
+        run: npm run release:cws
+        env:
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
 
   publish_to_github:
     name: Publish to GitHub
     needs: build
     runs-on: ubuntu-latest
-
     steps:
-    - name: Download dist artifact
-      uses: actions/download-artifact@v3
-      with:
-        name: dist
-        path: dist
-
-    - name: Add artifact to release
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: dist/*
-        tag: ${{ github.ref }}
-        file_glob: true
+      - name: Download dist artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist
+      - name: Add artifact to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: dist/*
+          tag: ${{ github.ref }}
+          file_glob: true

@@ -1,18 +1,7 @@
 {
-  "name": "open-new-tab-after-current-tab",
-  "version": "0.4.7",
-  "description": "Opens new tab after the active tab, instead of last position.",
-  "homepage": "https://dev.ligny.org/Open-New-Tab-After-Current-Tab/",
-  "author": "Arnaud Ligny",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab.git"
-  },
-  "bugs": {
-    "url": "https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab/issues"
-  },
+  "private": true,
   "main": "gulpfile.js",
+  "type": "module",
   "scripts": {
     "test": "xo",
     "build": "gulp dist",
@@ -20,23 +9,11 @@
     "release": "npm run build && npm run release:cws"
   },
   "devDependencies": {
-    "chrome-webstore-upload-cli": "^2.2",
-    "del": "^6.1",
-    "gulp": "^4.0",
-    "gulp-zip": "^5.1",
-    "xo": "^0.56"
-  },
-  "xo": {
-    "space": true,
-    "envs": [
-      "browser",
-      "webextensions"
-    ],
-    "rules": {
-      "unicorn/prefer-module": "off"
-    },
-    "ignores": [
-      "build/**"
-    ]
+    "chrome-webstore-upload-cli": "^3.5",
+    "del": "^8.0",
+    "globals": "^17.6.0",
+    "gulp": "^5.0",
+    "gulp-zip": "^6.1",
+    "xo": "^2.0"
   }
 }

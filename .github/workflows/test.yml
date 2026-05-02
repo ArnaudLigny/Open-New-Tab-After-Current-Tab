@@ -1,5 +1,4 @@
 name: Test
-
 on:
   push:
     branches:
@@ -16,15 +15,13 @@ jobs:
     name: Test code
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout source
-      uses: actions/checkout@v4
-
-    - uses: actions/setup-node@v3
-      with:
-        node-version: 16
-
-    - name: Install packages
-      run: npm install
-
-    - name: Run test
-      run: npm run test
+      - name: Checkout source
+        uses: actions/checkout@v6
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install packages
+        run: npm ci
+      - name: Run test
+        run: npm run test
