@@ -62,7 +62,7 @@ async function getCurrentActiveTab() {
     const {currentIndex} = await getWindowState(windowId);
     if (!Number.isInteger(currentIndex)) {
       // Last position (default behavior)
-      const allTabs = await chrome.tabs.query({currentWindow: true});
+      const allTabs = await chrome.tabs.query({windowId});
       console.log(windowId + ': fallback - set currentIndex = tabs.length: ' + allTabs.length);
       await setWindowState(windowId, {currentIndex: allTabs.length, currentGroup: -1});
     }
@@ -146,6 +146,10 @@ chrome.windows.onFocusChanged.addListener(windowId => {
     try {
       if (windowId !== -1 && windowId !== -2) { // @see https://developer.chrome.com/docs/extensions/reference/windows/#properties
         const tabs = await chrome.tabs.query({windowId, active: true});
+        if (tabs.length === 0) {
+          return;
+        }
+
         console.log(tabs[0].windowId + ': windows.onFocusChanged - set currentIndex = tab.index: ' + tabs[0].index);
         console.log(tabs[0].windowId + ': windows.onFocusChanged - set currentGroup = tab.groupId: ' + tabs[0].groupId);
         await setWindowState(tabs[0].windowId, {currentIndex: tabs[0].index, currentGroup: tabs[0].groupId});
@@ -159,6 +163,10 @@ chrome.tabs.onActivated.addListener(activeInfo => { // eslint-disable-line no-un
   setTimeout(async () => {
     try {
       const tabs = await chrome.tabs.query({active: true, lastFocusedWindow: true, currentWindow: true});
+      if (tabs.length === 0) {
+        return;
+      }
+
       console.log(tabs[0].windowId + ': tabs.onActivated - set currentIndex = tab.index: ' + tabs[0].index);
       console.log(tabs[0].windowId + ': tabs.onActivated - set currentGroup = tab.groupId: ' + tabs[0].groupId);
       await setWindowState(tabs[0].windowId, {currentIndex: tabs[0].index, currentGroup: tabs[0].groupId});
@@ -172,6 +180,10 @@ chrome.tabs.onRemoved.addListener((tabId, removeInfo) => { // eslint-disable-lin
   setTimeout(async () => {
     try {
       const tabs = await chrome.tabs.query({active: true, lastFocusedWindow: true, currentWindow: true});
+      if (tabs.length === 0) {
+        return;
+      }
+
       console.log(tabs[0].windowId + ': tabs.onRemoved - set currentIndex = tab.index: ' + tabs[0].index);
       console.log(tabs[0].windowId + ': tabs.onRemoved - set currentGroup = tab.groupId: ' + tabs[0].groupId);
       await setWindowState(tabs[0].windowId, {currentIndex: tabs[0].index, currentGroup: tabs[0].groupId});
