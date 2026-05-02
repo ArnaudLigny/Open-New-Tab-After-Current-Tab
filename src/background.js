@@ -64,7 +64,7 @@ async function getCurrentActiveTab() {
       // No active tab found — fall back to chrome.windows.getCurrent
       const win = await chrome.windows.getCurrent();
       const allTabs = await chrome.tabs.query({windowId: win.id});
-      console.log(win.id + ': fallback - no active tab, set currentIndex = tabs.length: ' + allTabs.length);
+      console.log(win.id + ': fallback - no active tab, set currentIndex = allTabs.length: ' + allTabs.length);
       await setWindowState(win.id, {currentIndex: allTabs.length, currentGroup: -1});
       return;
     }
