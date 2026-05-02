@@ -41,6 +41,11 @@ const eventOnMoved = async (tabId, moveInfo) => {
   try {
     console.log(moveInfo.windowId + ': tabs.onMoved - set currentIndex = moveInfo.toIndex: ' + moveInfo.toIndex);
     const tabs = await chrome.tabs.query({windowId: moveInfo.windowId, active: true});
+    if (!tabs.length) {
+      console.log(moveInfo.windowId + ': tabs.onMoved - no active tab found, set currentGroup = -1');
+      await setWindowState(moveInfo.windowId, {currentIndex: moveInfo.toIndex, currentGroup: -1});
+      return;
+    }
     console.log(moveInfo.windowId + ': tabs.onMoved - set currentGroup = tab.groupId: ' + tabs[0].groupId);
     await setWindowState(moveInfo.windowId, {currentIndex: moveInfo.toIndex, currentGroup: tabs[0].groupId});
   } catch (error) {
