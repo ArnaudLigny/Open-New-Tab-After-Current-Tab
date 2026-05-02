@@ -1,12 +1,13 @@
-const {src, dest, series} = require('gulp');
-const del = require('del');
-const zip = require('gulp-zip');
+import {createRequire} from 'node:module';
+import {src, dest, series} from 'gulp';
+import {deleteAsync} from 'del';
+import zip from 'gulp-zip';
 
+const require = createRequire(import.meta.url);
 const extensionName = 'Open-New-Tab-After-Current-Tab';
 
 async function clean() {
-  await del(['build']);
-  await Promise.resolve();
+  await deleteAsync(['build']);
 }
 
 function build() {
@@ -14,7 +15,7 @@ function build() {
     .pipe(dest('build'));
 }
 
-function dist() {
+function distTask() {
   const manifest = require('./src/manifest.json');
   const distFileName = extensionName + '_v' + manifest.version + '.zip';
   return src('build/**')
@@ -22,7 +23,7 @@ function dist() {
     .pipe(dest('dist'));
 }
 
-exports.clean = clean;
-exports.build = series(clean, build);
-exports.dist = series(clean, build, dist);
-exports.default = series(clean, build, dist);
+export {clean};
+export const build_ = series(clean, build);
+export const dist = series(clean, build, distTask);
+export default series(clean, build, distTask);

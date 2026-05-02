@@ -5,52 +5,60 @@
  * file that was distributed with this source code.
  */
 
-const currentIndex = [];
-let currentGroup = '-1';
+async function getState() {
+  const data = await chrome.storage.session.get(['currentIndex', 'currentGroup']);
+  return {
+    currentIndex: data.currentIndex ?? {},
+    currentGroup: data.currentGroup ?? '-1',
+  };
+}
 
-const eventOnMoved = (tabId, moveInfo) => {
+async function setState(updates) {
+  return chrome.storage.session.set(updates);
+}
+
+const eventOnMoved = async (tabId, moveInfo) => {
   console.log(moveInfo.windowId + ': tabs.onMoved - set currentIndex = moveInfo.toIndex: ' + moveInfo.toIndex);
+  const {currentIndex} = await getState();
   currentIndex[moveInfo.windowId] = moveInfo.toIndex;
-  chrome.tabs.query({currentWindow: true, active: true}, tabs => {
-    console.log(tabs[0].windowId + ': tabs.onMoved - set currentGroup = tab.groupId: ' + tabs[0].groupId);
-    currentGroup = tabs[0].groupId;
-  });
+  const tabs = await chrome.tabs.query({currentWindow: true, active: true});
+  console.log(tabs[0].windowId + ': tabs.onMoved - set currentGroup = tab.groupId: ' + tabs[0].groupId);
+  await setState({currentIndex, currentGroup: tabs[0].groupId});
 };
-
-getCurrentActiveTab();
 
 /**
  * Get the position of the current active tab
  */
-function getCurrentActiveTab() {
-  chrome.tabs.query({currentWindow: true, active: true}, tabs => {
-    console.log(tabs[0].windowId + ': tabs.query - set currentIndex = tab.index: ' + tabs[0].index);
-    currentIndex[tabs[0].windowId] = tabs[0].index;
-    console.log(tabs[0].windowId + ': tabs.query - set currentGroup = tab.groupId: ' + tabs[0].groupId);
-    currentGroup = tabs[0].groupId;
-  });
+async function getCurrentActiveTab() {
+  const tabs = await chrome.tabs.query({currentWindow: true, active: true});
+  const {currentIndex} = await getState();
+  console.log(tabs[0].windowId + ': tabs.query - set currentIndex = tab.index: ' + tabs[0].index);
+  currentIndex[tabs[0].windowId] = tabs[0].index;
+  console.log(tabs[0].windowId + ': tabs.query - set currentGroup = tab.groupId: ' + tabs[0].groupId);
+  await setState({currentIndex, currentGroup: tabs[0].groupId});
   // Fallback
-  chrome.windows.getCurrent(window => {
-    if (!Number.isInteger(currentIndex[window.id])) {
-      // Last position (default behavior)
-      chrome.tabs.query({currentWindow: true}, tabs => {
-        console.log(tabs[0].windowId + ': fallback - set currentIndex = tabs.length: ' + tabs.length);
-        currentIndex[tabs[0].windowId] = tabs.length;
-        currentGroup = '-1';
-      });
-    }
-  });
+  const win = await chrome.windows.getCurrent();
+  const {currentIndex: updatedIndex} = await getState();
+  if (!Number.isInteger(updatedIndex[win.id])) {
+    // Last position (default behavior)
+    const allTabs = await chrome.tabs.query({currentWindow: true});
+    console.log(allTabs[0].windowId + ': fallback - set currentIndex = tabs.length: ' + allTabs.length);
+    updatedIndex[allTabs[0].windowId] = allTabs.length;
+    await setState({currentIndex: updatedIndex, currentGroup: '-1'});
+  }
 }
 
 /**
  * I like to move it!
  */
-function moveIt(tab, event) {
+async function moveIt(tab, event) {
+  const {currentIndex, currentGroup} = await getState();
   console.log(tab.windowId + ': tabs.' + event + ' - get tab.index: ' + tab.index);
   console.log(tab.windowId + ': tabs.' + event + ' - get currentIndex: ' + currentIndex[tab.windowId]);
   if (Number.isInteger(currentIndex[tab.windowId])) {
     const moveToIndex = currentIndex[tab.windowId] + 1;
     currentIndex[tab.windowId] = moveToIndex;
+    await setState({currentIndex});
 
     if (tab.index === moveToIndex) {
       console.log(tab.windowId + ': tabs.' + event + ' - tab.index: ' + tab.index + ' === moveToIndex: ' + moveToIndex + ' (nothing to do)');
@@ -58,20 +66,18 @@ function moveIt(tab, event) {
       return;
     }
 
-    chrome.tabs.move(tab.id, {
-      index: moveToIndex,
-    }, movedTab => {
-      // Workaround for the Chrome and Edge scrollable tabstrip issue
-      // only if opener tab is not pinned
-      chrome.tabs.get(movedTab.openerTabId, async tab => {
-        if (!tab.pinned) {
-          chrome.tabs.update(movedTab.openerTabId, {active: true}, () => {
-            console.log(tab.windowId + ': active moved tab');
-            chrome.tabs.update(movedTab.id, {active: true});
-          });
-        }
-      });
-    });
+    const movedTab = await chrome.tabs.move(tab.id, {index: moveToIndex});
+    // Workaround for the Chrome and Edge scrollable tabstrip issue
+    // only if opener tab is not pinned
+    if (movedTab.openerTabId) {
+      const openerTab = await chrome.tabs.get(movedTab.openerTabId);
+      if (!openerTab.pinned) {
+        await chrome.tabs.update(movedTab.openerTabId, {active: true});
+        console.log(tab.windowId + ': active moved tab');
+        await chrome.tabs.update(movedTab.id, {active: true});
+      }
+    }
+
     if (currentGroup >= 0) {
       chrome.tabs.group({
         tabIds: tab.id,
@@ -86,51 +92,55 @@ function moveIt(tab, event) {
 /**
  * Move the new tab after the current one.
  */
-chrome.tabs.onCreated.addListener(tab => {
+chrome.tabs.onCreated.addListener(async tab => {
   chrome.tabs.onMoved.removeListener(eventOnMoved);
-  moveIt(tab, 'onCreated');
+  await moveIt(tab, 'onCreated');
   chrome.tabs.onMoved.addListener(eventOnMoved);
 });
 
 /**
  * Remember the current tab index.
  */
-chrome.runtime.onInstalled.addListener(details => {
+chrome.runtime.onInstalled.addListener(async details => {
   if (details.reason === 'install' || details.reason === 'update') {
     console.log('runtime.onInstalled');
-    getCurrentActiveTab();
+    await getCurrentActiveTab();
   }
 });
+chrome.runtime.onStartup.addListener(async () => {
+  console.log('runtime.onStartup');
+  await getCurrentActiveTab();
+});
 chrome.windows.onFocusChanged.addListener(windowId => {
-  setTimeout(() => { // https://www.reddit.com/r/chrome_extensions/comments/no7igm/chrometabsonactivatedaddlistener_not_working/
+  setTimeout(async () => { // https://www.reddit.com/r/chrome_extensions/comments/no7igm/chrometabsonactivatedaddlistener_not_working/
     if (windowId !== -1 && windowId !== -2) { // @see https://developer.chrome.com/docs/extensions/reference/windows/#properties
-      chrome.tabs.query({windowId, active: true}, tabs => {
-        console.log(tabs[0].windowId + ': windows.onFocusChanged - set currentIndex = tab.index: ' + tabs[0].index);
-        currentIndex[tabs[0].windowId] = tabs[0].index;
-        console.log(tabs[0].windowId + ': windows.onFocusChanged - set currentGroup = tab.groupId: ' + tabs[0].groupId);
-        currentGroup = tabs[0].groupId;
-      });
+      const tabs = await chrome.tabs.query({windowId, active: true});
+      const {currentIndex} = await getState();
+      console.log(tabs[0].windowId + ': windows.onFocusChanged - set currentIndex = tab.index: ' + tabs[0].index);
+      currentIndex[tabs[0].windowId] = tabs[0].index;
+      console.log(tabs[0].windowId + ': windows.onFocusChanged - set currentGroup = tab.groupId: ' + tabs[0].groupId);
+      await setState({currentIndex, currentGroup: tabs[0].groupId});
     }
   }, 300);
 });
 chrome.tabs.onActivated.addListener(activeInfo => { // eslint-disable-line no-unused-vars
-  setTimeout(() => {
-    chrome.tabs.query({active: true, lastFocusedWindow: true, currentWindow: true}, tabs => {
-      console.log(tabs[0].windowId + ': tabs.onActivated - set currentIndex = tab.index: ' + tabs[0].index);
-      currentIndex[tabs[0].windowId] = tabs[0].index;
-      console.log(tabs[0].windowId + ': tabs.onActivated - set currentGroup = tab.groupId: ' + tabs[0].groupId);
-      currentGroup = tabs[0].groupId;
-    });
+  setTimeout(async () => {
+    const tabs = await chrome.tabs.query({active: true, lastFocusedWindow: true, currentWindow: true});
+    const {currentIndex} = await getState();
+    console.log(tabs[0].windowId + ': tabs.onActivated - set currentIndex = tab.index: ' + tabs[0].index);
+    currentIndex[tabs[0].windowId] = tabs[0].index;
+    console.log(tabs[0].windowId + ': tabs.onActivated - set currentGroup = tab.groupId: ' + tabs[0].groupId);
+    await setState({currentIndex, currentGroup: tabs[0].groupId});
   }, 300);
 });
 chrome.tabs.onMoved.addListener(eventOnMoved);
 chrome.tabs.onRemoved.addListener((tabId, removeInfo) => { // eslint-disable-line no-unused-vars
-  setTimeout(() => {
-    chrome.tabs.query({active: true, lastFocusedWindow: true, currentWindow: true}, tabs => {
-      console.log(tabs[0].windowId + ': tabs.onRemoved - set currentIndex = tab.index: ' + tabs[0].index);
-      currentIndex[tabs[0].windowId] = tabs[0].index;
-      console.log(tabs[0].windowId + ': tabs.onRemoved - set currentGroup = tab.groupId: ' + tabs[0].groupId);
-      currentGroup = tabs[0].groupId;
-    });
+  setTimeout(async () => {
+    const tabs = await chrome.tabs.query({active: true, lastFocusedWindow: true, currentWindow: true});
+    const {currentIndex} = await getState();
+    console.log(tabs[0].windowId + ': tabs.onRemoved - set currentIndex = tab.index: ' + tabs[0].index);
+    currentIndex[tabs[0].windowId] = tabs[0].index;
+    console.log(tabs[0].windowId + ': tabs.onRemoved - set currentGroup = tab.groupId: ' + tabs[0].groupId);
+    await setState({currentIndex, currentGroup: tabs[0].groupId});
   }, 300);
 });
