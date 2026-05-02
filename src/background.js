@@ -9,7 +9,7 @@ async function getState() {
   const data = await chrome.storage.session.get(['currentIndex', 'currentGroup']);
   return {
     currentIndex: data.currentIndex ?? {},
-    currentGroup: data.currentGroup ?? '-1',
+    currentGroup: data.currentGroup ?? -1,
   };
 }
 
@@ -44,7 +44,7 @@ async function getCurrentActiveTab() {
     const allTabs = await chrome.tabs.query({currentWindow: true});
     console.log(allTabs[0].windowId + ': fallback - set currentIndex = tabs.length: ' + allTabs.length);
     updatedIndex[allTabs[0].windowId] = allTabs.length;
-    await setState({currentIndex: updatedIndex, currentGroup: '-1'});
+    await setState({currentIndex: updatedIndex, currentGroup: -1});
   }
 }
 
