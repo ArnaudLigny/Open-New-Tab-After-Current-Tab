@@ -10,7 +10,7 @@ async function clean() {
   await deleteAsync(['build']);
 }
 
-function build() {
+function buildTask() {
   return src('src/**')
     .pipe(dest('build'));
 }
@@ -24,6 +24,6 @@ function distTask() {
 }
 
 export {clean};
-export const build_ = series(clean, build);
-export const dist = series(clean, build, distTask);
-export default series(clean, build, distTask);
+export const build = series(clean, buildTask);
+export const dist = series(clean, buildTask, distTask);
+export default series(clean, buildTask, distTask);

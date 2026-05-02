@@ -117,7 +117,7 @@ async function moveIt(tab, event) {
       }
 
       if (currentGroup >= 0) {
-        chrome.tabs.group({
+        await chrome.tabs.group({
           tabIds: tab.id,
           groupId: currentGroup,
         });
