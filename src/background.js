@@ -41,11 +41,12 @@ const eventOnMoved = async (tabId, moveInfo) => {
   try {
     console.log(moveInfo.windowId + ': tabs.onMoved - set currentIndex = moveInfo.toIndex: ' + moveInfo.toIndex);
     const tabs = await chrome.tabs.query({windowId: moveInfo.windowId, active: true});
-    if (!tabs.length) {
+    if (tabs.length === 0) {
       console.log(moveInfo.windowId + ': tabs.onMoved - no active tab found, set currentGroup = -1');
       await setWindowState(moveInfo.windowId, {currentIndex: moveInfo.toIndex, currentGroup: -1});
       return;
     }
+
     console.log(moveInfo.windowId + ': tabs.onMoved - set currentGroup = tab.groupId: ' + tabs[0].groupId);
     await setWindowState(moveInfo.windowId, {currentIndex: moveInfo.toIndex, currentGroup: tabs[0].groupId});
   } catch (error) {
@@ -59,6 +60,15 @@ const eventOnMoved = async (tabId, moveInfo) => {
 async function getCurrentActiveTab() {
   try {
     const tabs = await chrome.tabs.query({currentWindow: true, active: true});
+    if (tabs.length === 0) {
+      // No active tab found — fall back to chrome.windows.getCurrent
+      const win = await chrome.windows.getCurrent();
+      const allTabs = await chrome.tabs.query({windowId: win.id});
+      console.log(win.id + ': fallback - no active tab, set currentIndex = tabs.length: ' + allTabs.length);
+      await setWindowState(win.id, {currentIndex: allTabs.length, currentGroup: -1});
+      return;
+    }
+
     const {windowId, index, groupId} = tabs[0];
     console.log(windowId + ': tabs.query - set currentIndex = tab.index: ' + index);
     console.log(windowId + ': tabs.query - set currentGroup = tab.groupId: ' + groupId);
