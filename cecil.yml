@@ -5,6 +5,6 @@ baseurl: https://dev.ligny.org/Open-New-Tab-After-Current-Tab/
 pages:
   dir: .
 static:
-  dir: docs
+  dir: .
   target: docs
-image: docs/Open-New-Tab-After-Current-Tab.gif
+image: docs/chrome-web-store/promo-440x280.png
