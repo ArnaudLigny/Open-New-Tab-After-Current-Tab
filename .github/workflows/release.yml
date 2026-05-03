@@ -58,6 +58,28 @@ jobs:
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
 
+  publish_to_edge:
+    name: Publish to Microsoft Edge Addons
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download dist artifact
+        uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist
+      - name: Get Current Release
+        id: get_current_release
+        uses: joutvhu/get-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: wdzeng/edge-addon@v2
+        with:
+          product-id: cb7fb69e-1443-4100-bdf7-60140851c86d
+          zip-path: dist/Open-New-Tab-After-Current-Tab_v${{ steps.get_current_release.outputs.tag_name }}.zip
+          client-id: ${{ secrets.EDGE_CLIENT_ID }}
+          api-key: ${{ secrets.EDGE_API_KEY }}
+
   publish_to_github:
     name: Publish to GitHub
     needs: build
