@@ -23,6 +23,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: pre-installed
+          extensions: mbstring, fileinfo, gd, imagick, intl, gettext, :redis
       - name: Build with Cecil
         uses: Cecilapp/Cecil-Action@v3
         with:
