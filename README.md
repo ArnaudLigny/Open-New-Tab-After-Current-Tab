@@ -53,6 +53,7 @@ Actions:
 <a href="https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab/actions/workflows/release.yml"><img src="https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab/actions/workflows/release.yml/badge.svg" alt="Release workflow" /></a>
 
 ```bash
+npx chrome-webstore-upload-keys # refresh keys if needed
 npm run release
 ```
 
