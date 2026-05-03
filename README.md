@@ -35,9 +35,10 @@ npm install
 
 ```bash
 npm run test
+npm run test:e2e
 ```
 
-### Build package
+### Build extension
 
 ```bash
 npm run build
