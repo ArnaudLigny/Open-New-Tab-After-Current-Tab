@@ -4,14 +4,16 @@
   "type": "module",
   "scripts": {
     "test": "xo",
+    "test:e2e": "playwright test",
     "build": "gulp dist",
     "release:cws": "cd build && chrome-webstore-upload upload --auto-publish",
     "release": "npm run build && npm run release:cws"
   },
   "devDependencies": {
+    "@playwright/test": "^1.59",
     "chrome-webstore-upload-cli": "^3.5",
     "del": "^8.0",
-    "globals": "^17.6.0",
+    "globals": "^17.6",
     "gulp": "^5.0",
     "gulp-zip": "^6.1",
     "xo": "^2.0"

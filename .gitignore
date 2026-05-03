@@ -4,3 +4,5 @@ certs
 node_modules
 .cecil
 .cache
+test-results
+playwright-report
