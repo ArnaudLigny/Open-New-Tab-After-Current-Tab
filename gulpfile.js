@@ -11,14 +11,14 @@ async function clean() {
 }
 
 function buildTask() {
-  return src('src/**')
+  return src('src/**', {encoding: false})
     .pipe(dest('build'));
 }
 
 function distTask() {
   const manifest = require('./src/manifest.json');
   const distFileName = extensionName + '_v' + manifest.version + '.zip';
-  return src('build/**')
+  return src('build/**', {encoding: false})
     .pipe(zip(distFileName))
     .pipe(dest('dist'));
 }
