@@ -156,6 +156,9 @@ chrome.runtime.onStartup.addListener(async () => {
   console.log('runtime.onStartup');
   await getCurrentActiveTab();
 });
+chrome.action.onClicked.addListener(() => {
+  chrome.runtime.openOptionsPage();
+});
 chrome.windows.onFocusChanged.addListener(windowId => {
   setTimeout(async () => { // https://www.reddit.com/r/chrome_extensions/comments/no7igm/chrometabsonactivatedaddlistener_not_working/
     try {

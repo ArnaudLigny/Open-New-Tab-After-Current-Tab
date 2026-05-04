@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title id="page-title"></title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #202124;
+        background: #fff;
+        margin: 0;
+        padding: 32px;
+        overflow-y: hidden;
+      }
+
+      .about {
+        max-width: 480px;
+      }
+
+      .about__header {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .about__name {
+        font-size: 20px;
+        font-weight: 600;
+        margin: 0;
+      }
+
+      .about__description {
+        color: #5f6368;
+        margin: 0 0 24px;
+      }
+
+      .about__table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      .about__table th,
+      .about__table td {
+        text-align: left;
+        padding: 6px 0;
+        vertical-align: top;
+      }
+
+      .about__table th {
+        color: #5f6368;
+        font-weight: normal;
+        padding-right: 24px;
+        white-space: nowrap;
+      }
+
+      a {
+        color: #1a73e8;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        body {
+          color: #e8eaed;
+          background: #202124;
+        }
+
+        .about__description,
+        .about__table th {
+          color: #9aa0a6;
+        }
+
+        a {
+          color: #8ab4f8;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="about">
+      <!--<div class="about__header">
+        <img src="icon-128.png" alt="" width="48" height="48">
+        <h1 class="about__name" id="ext-name"></h1>
+      </div>-->
+      <p class="about__description" id="ext-description"></p>
+      <table class="about__table">
+        <tbody>
+          <tr>
+            <th id="label-version"></th>
+            <td id="ext-version"></td>
+          </tr>
+          <tr>
+            <th id="label-author"></th>
+            <td id="ext-author"></td>
+          </tr>
+          <tr>
+            <th id="label-website"></th>
+            <td><a id="ext-homepage" href="" target="_blank" rel="noopener noreferrer"></a></td>
+          </tr>
+          <tr>
+            <th id="label-source"></th>
+            <td><a href="https://github.com/ArnaudLigny/Open-New-Tab-After-Current-Tab" target="_blank" rel="noopener noreferrer">GitHub</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <script src="options.js"></script>
+  </body>
+</html>
