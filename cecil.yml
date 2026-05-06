@@ -7,4 +7,4 @@ pages:
 static:
   dir: .
   target: docs
-image: docs/chrome-web-store/promo-440x280.png
+image: docs/store-promotional/promo-440x280.png
