@@ -2,7 +2,7 @@ _Open New Tab After Current Tab_ is a Chromium ([Google Chrome](https://chrome.g
 
 [![Open New Tab After Current Tab available in the Chrome Web Store](docs/ChromeWebStoreBadgeWBorder.png)](https://chrome.google.com/webstore/detail/open-new-tab-after-curren/mmcgnaachjapbbchcpjihhgjhpfcnoan) [![Open New Tab After Current Tab available in Microsoft Edge Addons](docs/MicrosoftEdgeAddonsBadge.png)](https://microsoftedge.microsoft.com/addons/detail/open-new-tab-after-curren/deebimacbjlpdcfbpacpckoccjnojacb)
 
-![Open New Tab After Current Tab promotional image](docs/chrome-web-store/promo-920x680.png)
+![Open New Tab After Current Tab promotional image](docs/store-promotional/promo-1400x560.png)
 
 By default a new tab is opened at the end of the row of tabs, but it's not intuitive: with this extension a new tab opened with the keyboard shortcut (<kbd>⌘ Cmd</kbd>+<kbd>T</kbd>) or with the "plus" button will be opened just after the current active tab.
 
