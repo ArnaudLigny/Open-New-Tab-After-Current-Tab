@@ -62,6 +62,6 @@ npm run release
 
 _Open New Tab After Current Tab_ is a free software distributed under the terms of the [MIT license](https://opensource.org/licenses/MIT).
 
-© [Arnaud Ligny](https://arnaudligny.fr)
+The _new tab_ icon by [Danil Polshin](https://thenounproject.com/everydaytemplate/), CC BY 3.0 License.
 
-The _new tab_ icon by [Danil Polshin](https://thenounproject.com/everydaytemplate/).
+© [Arnaud Ligny](https://arnaudligny.fr)
