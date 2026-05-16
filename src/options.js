@@ -2,7 +2,6 @@ const manifest = chrome.runtime.getManifest();
 const i18n = chrome.i18n.getMessage.bind(chrome.i18n);
 
 document.querySelector('#page-title').textContent = i18n('optionsAboutTitle');
-/* Commented: document.querySelector('#ext-name').textContent = manifest.name; */
 document.querySelector('#ext-description').textContent = i18n('extDescription');
 document.querySelector('#ext-version').textContent = manifest.version;
 document.querySelector('#ext-author').textContent = manifest.author;
