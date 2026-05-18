@@ -1,7 +1,7 @@
-name: Build & deploy website
+name: Build and deploy to GitHub Pages
 on:
   push:
-    branches: [master]
+    branches: [main, master]
     paths:
       - '.github/workflows/website.yml'
       - 'docs/**'
@@ -22,26 +22,28 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: pre-installed
           extensions: mbstring, fileinfo, gd, imagick, intl, gettext, :redis
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v5
       - name: Build with Cecil
         uses: Cecilapp/Cecil-Action@v3
         with:
           config: 'cecil.yml'
+          args: '-v --baseurl="${{ steps.pages.outputs.base_url }}/"'
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v5
-        with:
-          path: _site
   deploy:
+    needs: build
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: build
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
