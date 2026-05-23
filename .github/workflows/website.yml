@@ -9,12 +9,8 @@ on:
       - 'cecil.yml'
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: true
 
 jobs:
@@ -23,23 +19,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: pre-installed
-          extensions: mbstring, fileinfo, gd, imagick, intl, gettext, :redis
-      - name: Setup Pages
-        id: pages
-        uses: actions/configure-pages@v6
       - name: Build with Cecil
-        uses: Cecilapp/Cecil-Action@v3
-        with:
-          config: 'cecil.yml'
-          args: '-v --baseurl="${{ steps.pages.outputs.base_url }}/"'
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v5
+        uses: Cecilapp/Cecil-Action@v4
   deploy:
     needs: build
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
