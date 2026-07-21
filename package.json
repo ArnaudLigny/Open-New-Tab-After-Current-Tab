@@ -11,11 +11,11 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.59",
-    "chrome-webstore-upload-cli": "^3.5",
+    "chrome-webstore-upload-cli": "^4.0",
     "del": "^8.0",
     "globals": "^17.6",
     "gulp": "^5.0",
     "gulp-zip": "^6.1",
-    "xo": "^2.0"
+    "xo": "^4.0"
   }
 }
