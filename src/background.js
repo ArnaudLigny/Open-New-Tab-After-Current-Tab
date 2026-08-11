@@ -95,7 +95,8 @@ async function moveIt(tab, event) {
     console.log(tab.windowId + ': tabs.' + event + ' - get tab.index: ' + tab.index);
     console.log(tab.windowId + ': tabs.' + event + ' - get currentIndex: ' + currentIndex);
     if (Number.isInteger(currentIndex)) {
-      const moveToIndex = currentIndex + 1;
+      const pinnedTabs = await chrome.tabs.query({windowId: tab.windowId, pinned: true});
+      const moveToIndex = Math.max(currentIndex + 1, pinnedTabs.length);
       await setWindowState(tab.windowId, {currentIndex: moveToIndex});
 
       if (tab.index === moveToIndex) {
